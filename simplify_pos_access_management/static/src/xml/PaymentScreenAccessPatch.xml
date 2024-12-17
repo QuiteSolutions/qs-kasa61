@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+   
+    <t t-name="PaymentScreenButtons" t-inherit="point_of_sale.PaymentScreenButtons" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('partner-button')]" position="attributes">
+            <attribute name="t-if">access.isCustomerAvailable</attribute>
+        </xpath>
+        <xpath expr="//button[hasclass('js_invoice')]" position="replace">
+            <t t-if="access.isInvoiceAvailable"> 
+                <button class="button js_invoice btn btn-light btn-lg d-flex justify-content-between align-items-baseline w-100 w-md-50 lh-lg" t-att-class="{ 'highlight active': currentOrder.is_to_invoice() }"
+                    t-on-click="toggleIsToInvoice">
+                    <span><i class="fa fa-file-text-o me-2" />Invoice</span>
+                    <i class="fa me-2" t-attf-class="{{ currentOrder.is_to_invoice() ? 'fa-check-square text-action' : 'fa-square-o' }}" /> 
+                </button>
+            </t>
+        </xpath>
+        <xpath expr="//button[@t-if='pos.config.iface_tipproduct and pos.config.tip_product_id']" position="attributes"> 
+            <attribute name="t-if">pos.config.iface_tipproduct &amp;&amp; pos.config.tip_product_id &amp;&amp; access.isTipAvailable</attribute>
+        </xpath>
+        <xpath expr="//button[@t-if='pos.config.ship_later']" position="attributes">
+            <attribute name="t-if">pos.config.ship_later &amp;&amp; access.isShipLaterAvailable</attribute>
+        </xpath>
+        <xpath expr="//button[@t-if='pos.config.iface_cashdrawer']" position="attributes">
+            <attribute name="t-if">pos.config.iface_cashdrawer &amp;&amp; access.isCashboxAvailable</attribute> 
+        </xpath>
+    </t>
+    <t t-name="PaymentScreenMethodsBits" t-inherit="point_of_sale.PaymentScreenMethods" t-inherit-mode="extension">
+        <xpath expr="//t[@t-foreach='payment_methods_from_config']" position="attributes">
+            <attribute name="t-if">!access.restPaymentMethods.includes(paymentMethod.id)</attribute>
+        </xpath>
+    </t> 
+    <t t-name="PaymentScreenValidateBits" t-inherit="point_of_sale.PaymentScreenValidate" t-inherit-mode="extension">
+        <xpath expr="//t[1]/button" position="attributes">
+            <attribute name="t-if">access.isValidateAvailable</attribute>
+        </xpath>
+        <xpath expr="//t[2]/button" position="attributes">
+            <attribute name="t-if">access.isValidateAvailable</attribute>
+        </xpath>
+        <!-- <xpath expr="//button[2]" position="attributes">
+            <attribute name="t-if">access.isValidateAvailable</attribute>
+        </xpath> -->
+        <!-- <xpath expr="//t[1]//button" position="attributes">
+            <attribute name="t-if">access.isValidateAvailable</attribute>
+        </xpath> -->
+    </t>
+</templates>
