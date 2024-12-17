@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="PaymentScreenValidate" t-inherit="point_of_sale.PaymentScreenValidate" t-inherit-mode="extension">
+        <xpath expr="//t[@t-if='ui.isSmall']/div[hasclass('switchpane', 'd-flex')]" position="attributes">
+            <attribute name="t-if">access.isValidateAvailable</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('next', 'validation')]" position="attributes">
+            <attribute name="t-if">access.isValidateAvailable</attribute>
+        </xpath>
+    </t>
+</templates>

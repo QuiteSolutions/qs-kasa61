@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="pos_access_view_form" model="ir.ui.view">
+        <field name="name">pos_access_view_form</field>
+        <field name="model">pos.access</field>
+        <field name="groups_id" eval="[(4, ref('group_pos_management_spt'))]"/>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <field name="active" invisible="1"/>
+                        <button invisible="active == False" class="oe_stat_button"
+                            name ="toggle_active_value"
+                            type ="object"
+                            icon ="fa-stop">
+                            <div class="o_stat_info o_form_field">
+                                <span style="font-weight: bold;" class="text-danger">Deactivate Rule</span>
+                            </div>
+                        </button>
+                        <button invisible="active == True" class="oe_stat_button"
+                            name ="toggle_active_value"
+                            type ="object"
+                            icon ="fa-play">
+                            <div class="o_stat_info o_form_field">
+                                <span style="font-weight: bold;" class="text-success">Activate Rule</span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" />
+                        </group>
+                        <group>
+                            <field name="pos_config_ids" widget='many2many_tags'/>
+                        </group>
+                    </group> 
+                    <group>
+                        <group name="user_selection">
+                            <field name="is_multiemployee_pos" invisible="1"/>
+                            <!-- <field name="employee_ids" widget='many2many_tags' invisible="is_multiemployee_pos == False"/> -->
+                            <field name="user" widget='many2many_tags' invisible="is_multiemployee_pos == True"></field>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="payment_access" string="Payment Access">
+                            <group>
+                                <field name="hide_payment"></field>
+                                <field name="pos_payment_method_ids" widget='many2many_tags'></field>
+                            </group>
+                            <group invisible="hide_payment == True">
+                                <group>
+                                    <field name="hide_payment_customer_button"></field>
+                                    <field name="hide_payment_validate_button"></field>
+                                    <field name="hide_open_cashbox_btn"></field>
+                                    <field name="hide_payment_tip_button"></field>
+                                </group>
+                                <group>
+                                    <field name="hide_payment_ship_later_button"></field>
+                                    <field name="hide_payment_invoice_button"></field>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="order_access" string="Order Access">
+                            <group>
+                                <field name="pos_category_ids" widget='many2many_tags'/>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="hide_delete_order"></field>
+                                </group>
+                                <group>
+                                    <field name="only_show_active_order"></field>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="show_salesperson_orders" />
+                            </group>
+                        </page>
+                        <page name="customer_access" string="Customer Access">
+                            <!-- <group>
+                                <field name="hide_customer"></field>
+                            </group> -->
+                            <group>
+                                <group>
+                                    <field name="hide_create_customer"></field>
+                                </group>
+                                <group>
+                                    <!-- <field name="hide_save_customer"></field> -->
+                                    <field name="hide_edit_customer"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="show_salesperson_customers" />
+                            </group>
+                        </page>
+                        <page name="numpad_access" string="Numpad Access">
+                            <group>
+                                <field name="hide_numpad"></field>
+                                <field invisible="hide_numpad == True" name="hide_plus_minus"></field>
+                                <field invisible="hide_numpad == True" name="hide_price"></field>
+                                <field invisible="hide_numpad == True" name="hide_qty"></field>
+                                <field invisible="hide_numpad == True" name="hide_discount"></field>
+                            </group>
+                        </page>
+                        <page name="action_access" string="Action Access">
+                            <group>
+                                <group name="pos_shop_actions" string="Pos Shop Actions">
+                                    <field name="hide_internal_note_button"></field>
+                                    <field name="hide_customer_note_button"></field>
+                                    <field name="hide_general_note_button"></field>
+                                    <field name="hide_refund_button"></field>
+                                    <!-- <field name="hide_save_button"></field> -->
+                                    <field name="hide_quotation_button"></field>
+                                    <field name="hide_fiscal_button"></field>
+                                    <field name="hide_price_list_button"></field>
+                                </group> 
+                            </group>
+                        </page>
+                        <page name="general_access" string="General Access">
+                            <group>
+                                <field name="hide_close"></field>
+                                <field name="hide_backend_pos"></field>
+                                <field name="hide_cash_in"></field>
+                                <field name="hide_debug_window"></field>
+                                <field name="hide_create_product_menu"></field>
+                            </group>
+                        </page>
+                    </notebook> 
+                    <group>
+                        <group>
+                            <field name="create_uid" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="write_uid" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="create_date" />
+                        </group>
+                        <group>
+                            <field name="write_date" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="pos_access_search_view" model="ir.ui.view">
+            <field name="name">pos.access.search.view</field>
+            <field name="model">pos.access</field>
+            <field name="arch" type="xml">
+                <search string="Access Management">
+                    <field name="name" string="Name"/>
+                    <separator/>
+                    <filter string="All" name="all" domain="['|', ('active', '=', False), ('active', '=', True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Created By" name="created_by" domain="[]" context="{'group_by': 'create_uid'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    <record id="pos_access_view_list" model="ir.ui.view">
+        <field name="name">pos.access.view.list</field>
+        <field name="model">pos.access</field>
+        <field name="groups_id" eval="[(4, ref('group_pos_management_spt'))]"/>
+        <field name="arch" type="xml">
+            <list string="">
+                <field name="name" />
+                <field name="user" widget='many2many_tags'></field>
+                <field name="pos_config_ids" widget='many2many_tags'/>
+                <field name="create_date" />
+                <field name="write_date" />
+            </list>
+        </field>
+    </record>
+
+    <record id="pos_access_action" model="ir.actions.act_window">
+        <field name="name">POS Access</field>
+        <field name="res_model">pos.access</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_all': 1}</field>
+    </record>
+
+    <menuitem id="menu_point_access_product"
+        name="POS access Right"
+        parent="point_of_sale.menu_point_config_product"
+        action="pos_access_action"
+        sequence="100"
+        groups="group_pos_management_spt"/>
+</odoo>

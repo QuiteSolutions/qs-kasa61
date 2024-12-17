@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="ProductScreen" t-inherit="point_of_sale.ProductScreen">
+        <xpath expr="//button[@t-on-click='() => currentOrder.pay()']" position="replace">
+            <t t-if="state.isPaymentAvailable">
+                <button class="btn-switchpane pay-button btn w-50 rounded-0 fw-bolder" t-attf-class="{{ primaryPayButton ? 'btn-primary' : 'btn-secondary' }}" t-on-click="() => currentOrder.pay()">
+                    <span class="fs-1 d-block">Pay</span>
+                    <span><t t-esc="total" /></span>
+                </button>
+            </t>
+        </xpath>
+    </t>
+</templates>
