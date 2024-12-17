@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_res_access_view_form" model="ir.ui.view">
+        <field name="name">pos_res_access_view_form</field>
+        <field name="model">pos.access</field>
+        <field name="inherit_id" ref="simplify_pos_access_management.pos_access_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='action_access']/group/group" position="after">
+                <group name="pos_res_actions" string="Pos Restaurant Actions"> 
+                    <field name="hide_split_button"></field>
+                    <field name="hide_bill_button"></field> 
+                    <field name="hide_order_button"></field>
+                    <field name="hide_guest_button"></field>
+                    <field name="hide_transfer_button"></field>
+                    <field name="hide_create_floor_button"></field>
+                    <field name="hide_create_table_button"></field>
+                    <!-- <field name="hide_release_table_button"></field> -->
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='general_access']/group" position="inside"> 
+                <field name="hide_edit_plan_menu"></field>
+                <field name="pos_floor_ids" widget='many2many_tags'></field>
+            </xpath>
+        </field>
+    </record>
+</odoo>
