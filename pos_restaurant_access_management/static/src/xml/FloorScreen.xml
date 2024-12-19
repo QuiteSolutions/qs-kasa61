@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="FloorScreen" t-inherit="pos_restaurant.FloorScreen" t-inherit-mode="extension">
+        <xpath expr="//t[@t-as='floor']" position="attributes">
+            <attribute name="t-if">access.rest_floor_ids &amp; &amp; !access.rest_floor_ids.includes(floor.id)</attribute>
+        </xpath> 
+        <xpath expr="//i[@t-on-click='addFloor']/.." position="replace">
+            <t t-if="access.isCreateFloorAvailable">
+                <button t-attf-class="{{editButtonClass}} btn-secondary lh-lg" t-if="pos.isEditMode or pos.config.floor_ids?.length === 0" >
+                    <i class="fa fa-plus fa-fw" role="img" aria-label="Add Floor" title="Add Floor" t-on-click="addFloor"/>
+                </button>
+            </t> 
+        </xpath>
+        <xpath expr="//button[@t-on-click.stop='doCreateTable.call']" position="attributes">
+            <attribute name="t-if">access.isCreateTableAvailable</attribute>
+        </xpath>
+    </t> 
+</templates>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="ControlButtonsBits" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('o_fiscal_position_button')]" position="attributes">
+            <attribute name="t-if">!pos.config.takeaway &amp;&amp; access.isFiscalAvailable</attribute>
+        </xpath>
+        <xpath expr="//button[@t-on-click='clickTableGuests']" position="attributes">
+            <attribute name="t-if">access.isGuestavailable</attribute>
+        </xpath> 
+        <xpath expr="//button[@t-on-click='clickPrintBill']" position="attributes">
+            <attribute name="t-if">access.isBillvailable</attribute>
+        </xpath>   
+        <xpath expr="//i[@class='oi oi-arrow-right me-1']/.." position="attributes">
+            <attribute name="t-if">access.isTranferAvailable</attribute>
+        </xpath>
+        <xpath expr="//i[@class='fa fa-files-o me-1']/.." position="attributes">
+            <attribute name="t-if">access.isSplitavailable</attribute>
+        </xpath> 
+    </t> 
+</templates>
+ 

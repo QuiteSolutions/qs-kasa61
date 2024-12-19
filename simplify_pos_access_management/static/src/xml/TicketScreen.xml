@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="TicketScreen" t-inherit="point_of_sale.TicketScreen"  t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('rightpane')]//div[@class='orders overflow-y-auto flex-grow-1']" position="replace"> 
+            <div class="orders overflow-y-auto flex-grow-1">
+                <t t-if="_filteredOrderList.length !== 0">
+                    <div class="header-row d-flex text-bg-700 fw-bolder" t-att-class="{ 'd-none': ui.isSmall }">
+                        <div class="col wide p-2">Date</div>
+                        <div class="col wide p-2">Receipt Number</div>
+                        <div class="col wide p-2">Order number</div>
+                        <div class="col p-2">Customer</div>
+                        <div class="col wide p-2" t-if="showCardholderName()">Cardholder Name</div>
+                        <div class="col p-2">Cashier</div>
+                        <div class="col end p-2">Total</div>
+                        <div class="col narrow p-2">Status</div>
+                        <div class="col very-narrow p-2" name="delete"></div>
+                    </div>
+                    <t t-if="!ui.isSmall" t-foreach="_filteredOrderList" t-as="order" t-key="order.uuid">
+                        <t t-if="!access.show_salesperson_orders"> 
+                            <div t-if="this.check_order_access(order)" class="order-row" t-att-class="{ 'highlight bg-primary text-white': isHighlighted(order) }"
+                                t-on-click="() => this.onClickOrder(order)" t-on-dblclick="() => order.uiState.locked ? ()=>{} : this._setOrder(order)" >
+                                <div class="col wide p-2 ">
+                                    <div><t t-esc="getDate(order)"></t></div>
+                                </div>
+                                <div class="col wide p-2">
+                                    <div><t t-esc="order.pos_reference"></t></div>
+                                </div>
+                                <div class="col wide p-2">
+                                    <div><t t-esc="order.tracking_number"></t></div>
+                                </div>
+                                <div class="col p-2">
+                                <!-- <t t-debug="order" /> -->
+                                    <div><t t-esc="order.partner_id?.name"></t></div>
+                                </div>
+                                <div t-if="showCardholderName()" class="col p-2">
+                                    <div><t t-esc="getCardholderName(order)"></t></div>
+                                </div>
+                                <div class="col p-2">
+                                    <t t-esc="getCashier(order)"></t>
+                                </div>
+                                <div class="col end p-2">
+                                    <div><t t-esc="getTotal(order)"></t></div>
+                                </div>
+                                <div class="col narrow p-2">
+                                    <div><t t-esc="getStatus(order)"></t></div>
+                                </div>
+                                <div t-if="!shouldHideDeleteButton(order)" class="col very-narrow delete-button p-2" name="delete" t-on-click.stop="() => this.pos.onDeleteOrder(order)">
+                                    <i class="fa fa-trash" aria-hidden="true"/>
+                                </div>
+                                <div t-else="" class="col very-narrow p-2"></div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="order-row" t-att-class="{ 'highlight bg-primary text-white': isHighlighted(order) }"
+                                t-on-click="() => this.onClickOrder(order)" t-on-dblclick="() => order.uiState.locked ? ()=>{} : this._setOrder(order)" >
+                                <div class="col wide p-2 ">
+                                    <div><t t-esc="getDate(order)"></t></div>
+                                </div>
+                                <div class="col wide p-2">
+                                    <div><t t-esc="order.pos_reference"></t></div>
+                                </div>
+                                <div class="col wide p-2">
+                                    <div><t t-esc="order.tracking_number"></t></div>
+                                </div>
+                                <div class="col p-2">
+                                <!-- <t t-debug="order" /> -->
+                                    <div><t t-esc="order.partner_id?.name"></t></div>
+                                </div>
+                                <div t-if="showCardholderName()" class="col p-2">
+                                    <div><t t-esc="getCardholderName(order)"></t></div>
+                                </div>
+                                <div class="col p-2">
+                                    <t t-esc="getCashier(order)"></t>
+                                </div>
+                                <div class="col end p-2">
+                                    <div><t t-esc="getTotal(order)"></t></div>
+                                </div>
+                                <div class="col narrow p-2">
+                                    <div><t t-esc="getStatus(order)"></t></div>
+                                </div>
+                                <div t-if="!shouldHideDeleteButton(order)" class="col very-narrow delete-button p-2" name="delete" t-on-click.stop="() => this.pos.onDeleteOrder(order)">
+                                    <i class="fa fa-trash" aria-hidden="true"/>
+                                </div>
+                                <div t-else="" class="col very-narrow p-2"></div>
+                            </div>
+                        </t>
+                    </t>
+                    <t t-if="ui.isSmall" t-foreach="_filteredOrderList" t-as="order" t-key="order.uuid">
+                        <t t-if="!access.show_salesperson_orders"> 
+                            <div t-if="this.check_order_access(order)"  class="mobileOrderList order-row rounded-3" t-att-class="{ 'highlight bg-primary text-white': isHighlighted(order) }"
+                                t-on-click="() => this.onClickOrder(order)" t-on-dblclick="() =>  order.uiState.locked ? ()=>{} : this._setOrder(order)" >
+                                <div class="col p-2 d-flex justify-content-between align-items-center">
+                                    <div><t t-esc="order.pos_reference"></t> / <t t-esc="order.tracking_number"></t></div>
+                                    <div><t t-esc="getTotal(order)"></t></div>
+                                </div>
+                                <div class="col p-2 d-flex justify-content-between align-items-center">
+                                    <div><t t-esc="getDate(order)"></t></div>
+                                    <div class="orderStatus"><t t-esc="getStatus(order)"></t></div>
+                                </div>
+                                <div class="col p-2">
+                                    <div t-if="!shouldHideDeleteButton(order)" class="col very-narrow delete-button p-2 rounded-2" name="delete" t-on-click.stop="() => this.pos.onDeleteOrder(order)">
+                                        <i class="fa fa-trash" aria-hidden="true"/> Delete
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="mobileOrderList order-row rounded-3" t-att-class="{ 'highlight bg-primary text-white': isHighlighted(order) }"
+                                t-on-click="() => this.onClickOrder(order)" t-on-dblclick="() =>  order.uiState.locked ? ()=>{} : this._setOrder(order)" >
+                                <div class="col p-2 d-flex justify-content-between align-items-center">
+                                    <div><t t-esc="order.pos_reference"></t> / <t t-esc="order.tracking_number"></t></div>
+                                    <div><t t-esc="getTotal(order)"></t></div>
+                                </div>
+                                <div class="col p-2 d-flex justify-content-between align-items-center">
+                                    <div><t t-esc="getDate(order)"></t></div>
+                                    <div class="orderStatus"><t t-esc="getStatus(order)"></t></div>
+                                </div>
+                                <div class="col p-2">
+                                    <div t-if="!shouldHideDeleteButton(order)" class="col very-narrow delete-button p-2 rounded-2" name="delete" t-on-click.stop="() => this.pos.onDeleteOrder(order)">
+                                        <i class="fa fa-trash" aria-hidden="true"/> Delete
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+                <CenteredIcon
+                    t-else=""
+                    icon="this.pos.data.network.loading ? 'fa-spinner fa-spin' : 'fa-shopping-cart fa-4x'"
+                    text="this.pos.data.network.loading ? 'Loading...' : 'No orders found'"
+                    class="'h-100'"/>
+            </div>
+            <!-- <t t-if="!access.show_salesperson_orders"> 
+                <div t-if="this.check_order_access(order)" class="order-row" t-att-class="{ 'highlight bg-primary text-white': isHighlighted(order) }"
+                    t-on-click="() => this.onClickOrder(order)" t-on-dblclick="() => order.uiState.locked ? ()=>{} : this._setOrder(order)" >
+                    <div class="col wide p-2 ">
+                        <div><t t-esc="getDate(order)"></t></div>
+                    </div>
+                    <div class="col wide p-2">
+                        <div><t t-esc="order.pos_reference"></t></div>
+                    </div>
+                    <div class="col wide p-2">
+                        <div><t t-esc="order.tracking_number"></t></div>
+                    </div>
+                    <div class="col p-2"> 
+                        <div><t t-esc="order.partner_id?.name"></t></div>
+                    </div>
+                    <div t-if="showCardholderName()" class="col p-2">
+                        <div><t t-esc="getCardholderName(order)"></t></div>
+                    </div>
+                    <div class="col p-2">
+                        <t t-esc="getCashier(order)"></t>
+                    </div>
+                    <div class="col end p-2">
+                        <div><t t-esc="getTotal(order)"></t></div>
+                    </div>
+                    <div class="col narrow p-2">
+                        <div><t t-esc="getStatus(order)"></t></div>
+                    </div>
+                    <div t-if="!shouldHideDeleteButton(order)" class="col very-narrow delete-button p-2" name="delete" t-on-click.stop="() => this.pos.onDeleteOrder(order)">
+                        <i class="fa fa-trash" aria-hidden="true"/>
+                    </div>
+                    <div t-else="" class="col very-narrow p-2"></div>
+                </div>    
+            </t> 
+            <t t-else="">
+                <div class="order-row" t-att-class="{ 'highlight bg-primary text-white': isHighlighted(order) }"
+                    t-on-click="() => this.onClickOrder(order)" t-on-dblclick="() => order.uiState.locked ? ()=>{} : this._setOrder(order)" >
+                    <div class="col wide p-2 ">
+                        <div><t t-esc="getDate(order)"></t></div>
+                    </div>
+                    <div class="col wide p-2">
+                        <div><t t-esc="order.pos_reference"></t></div>
+                    </div>
+                    <div class="col wide p-2">
+                        <div><t t-esc="order.tracking_number"></t></div>
+                    </div>
+                    <div class="col p-2"> 
+                        <div><t t-esc="order.partner_id?.name"></t></div>
+                    </div>
+                    <div t-if="showCardholderName()" class="col p-2">
+                        <div><t t-esc="getCardholderName(order)"></t></div>
+                    </div>
+                    <div class="col p-2">
+                        <t t-esc="getCashier(order)"></t>
+                    </div>
+                    <div class="col end p-2">
+                        <div><t t-esc="getTotal(order)"></t></div>
+                    </div>
+                    <div class="col narrow p-2">
+                        <div><t t-esc="getStatus(order)"></t></div>
+                    </div>
+                    <div t-if="!shouldHideDeleteButton(order)" class="col very-narrow delete-button p-2" name="delete" t-on-click.stop="() => this.pos.onDeleteOrder(order)">
+                        <i class="fa fa-trash" aria-hidden="true"/>
+                    </div>
+                    <div t-else="" class="col very-narrow p-2"></div>
+                </div>
+            </t>  -->
+        </xpath>
+        <!-- <xpath expr="//div[@class='orders overflow-y-auto flex-grow-1']//t[@t-if='ui.isSmall']/div[@class='mobileOrderList order-row']" position="replace"> 
+            <t t-if="!access.show_salesperson_orders">   
+                <div t-if="this.check_order_access(order)" class="mobileOrderList order-row rounded-3" t-att-class="{ 'highlight bg-primary text-white': isHighlighted(order) }"
+                    t-on-click="() => this.onClickOrder(order)" t-on-dblclick="() =>  order.uiState.locked ? ()=>{} : this._setOrder(order)" >
+                    <div class="col p-2 d-flex justify-content-between align-items-center">
+                        <div><t t-esc="order.pos_reference"></t> / <t t-esc="order.tracking_number"></t></div>
+                        <div><t t-esc="getTotal(order)"></t></div>
+                    </div>
+                    <div class="col p-2 d-flex justify-content-between align-items-center">
+                        <div><t t-esc="getDate(order)"></t></div>
+                        <div class="orderStatus"><t t-esc="getStatus(order)"></t></div>
+                    </div>
+                    <div class="col p-2">
+                        <div t-if="!shouldHideDeleteButton(order)" class="col very-narrow delete-button p-2 rounded-2" name="delete" t-on-click.stop="() => this.pos.onDeleteOrder(order)">
+                            <i class="fa fa-trash" aria-hidden="true"/> Delete
+                        </div>
+                    </div>
+                </div> 
+            </t> 
+            <t t-else="">
+                <div class="mobileOrderList order-row rounded-3" t-att-class="{ 'highlight bg-primary text-white': isHighlighted(order) }"
+                    t-on-click="() => this.onClickOrder(order)" t-on-dblclick="() =>  order.uiState.locked ? ()=>{} : this._setOrder(order)" >
+                    <div class="col p-2 d-flex justify-content-between align-items-center">
+                        <div><t t-esc="order.pos_reference"></t> / <t t-esc="order.tracking_number"></t></div>
+                        <div><t t-esc="getTotal(order)"></t></div>
+                    </div>
+                    <div class="col p-2 d-flex justify-content-between align-items-center">
+                        <div><t t-esc="getDate(order)"></t></div>
+                        <div class="orderStatus"><t t-esc="getStatus(order)"></t></div>
+                    </div>
+                    <div class="col p-2">
+                        <div t-if="!shouldHideDeleteButton(order)" class="col very-narrow delete-button p-2 rounded-2" name="delete" t-on-click.stop="() => this.pos.onDeleteOrder(order)">
+                            <i class="fa fa-trash" aria-hidden="true"/> Delete
+                        </div>
+                    </div>
+                </div> 
+            </t>
+        </xpath> -->
+    </t>
+</templates>
