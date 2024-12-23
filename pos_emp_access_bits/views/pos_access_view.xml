@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_res_access_view_form" model="ir.ui.view">
+        <field name="name">pos_res_access_view_form</field>
+        <field name="model">pos.access</field>
+        <field name="inherit_id" ref="simplify_pos_access_management.pos_access_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='user_selection']" position="replace">
+                <group name="user_emp_selection">
+                    <field name="is_multiemployee_pos" />
+                    <field name="employee_ids" widget='many2many_tags' 
+                        invisible="not is_multiemployee_pos"/>
+                    <field name="user" widget='many2many_tags' invisible="is_multiemployee_pos" options="{'no_create': True}" domain="[('share','=',False)]" ></field> 
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
