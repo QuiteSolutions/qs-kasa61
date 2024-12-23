@@ -6,7 +6,7 @@ const { onWillStart, onMounted, useState } = owl;
 patch(ActionpadWidget.prototype, {
   setup() {
     super.setup(...arguments); 
-    this.state = useState({
+    this.access_state = useState({
       isPaymentAvailable: true,
       isCustomerAvailable: true,
     });
@@ -27,7 +27,7 @@ patch(ActionpadWidget.prototype, {
         }
       } 
        
-      this.state.isPaymentAvailable = Boolean(res.hide_payment);
+      this.access_state.isPaymentAvailable = Boolean(res.hide_payment);
     }); 
   },
 });

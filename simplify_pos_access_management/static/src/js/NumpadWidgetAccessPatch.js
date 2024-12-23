@@ -9,7 +9,7 @@ patch(Numpad.prototype, {
   setup() {
     super.setup(...arguments);
     this.pos = usePos();
-    this.state = useState({
+    this.access_state = useState({
       isNumpadAvailable: true, 
     });
 
@@ -30,7 +30,7 @@ patch(Numpad.prototype, {
           res = new_res
         }
       } 
-      this.state.isNumpadAvailable = Boolean(res.hide_numpad);  
+      this.access_state.isNumpadAvailable = Boolean(res.hide_numpad);  
     });
   },
 });

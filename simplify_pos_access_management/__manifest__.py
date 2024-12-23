@@ -1,6 +1,6 @@
 {
     "name": "Simplify Pos Access Management | POS access rights | POS user access setup",
-    "version": "18.0.1.0.0",
+    "version": "18.0.2.0.0",
     "sequence": 5,
     "author": "Terabits Technolab",
     "license": "OPL-1",

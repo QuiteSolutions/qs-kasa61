@@ -9,8 +9,9 @@ const { onWillStart, onMounted, useState } = owl;
 patch(ProductScreen.prototype, {
   setup() {
     super.setup(...arguments);
+    debugger
     this.pos = usePos();
-    this.state = useState({
+    this.access_state = useState({
       isPaymentAvailable: true,
       isPriceAvailable: true,
       isDiscountAvailable: true,
@@ -39,36 +40,37 @@ patch(ProductScreen.prototype, {
           res = new_res
         }
       }
-      this.state.isPaymentAvailable = Boolean(res.hide_payment);
-      this.state.isPriceAvailable = Boolean(res.hide_price);
-      this.state.isDiscountAvailable = Boolean(res.hide_discount);
-      this.state.isPlusMinusAvailable = Boolean(res.hide_plus_minus);
-      this.state.isQtyAvailable = Boolean(res.hide_qty);
-      this.state.removableCategories = res.pos_category_ids;
+      this.access_state.isPaymentAvailable = Boolean(res.hide_payment);
+      this.access_state.isPriceAvailable = Boolean(res.hide_price);
+      this.access_state.isDiscountAvailable = Boolean(res.hide_discount);
+      this.access_state.isPlusMinusAvailable = Boolean(res.hide_plus_minus);
+      this.access_state.isQtyAvailable = Boolean(res.hide_qty);
+      this.access_state.removableCategories = res.pos_category_ids;
 
-      if (!this.state.isQtyAvailable) {
-        if (this.state.isPriceAvailable) this.onNumpadClick("price");
-        else if (this.state.isDiscountAvailable) {
+      if (!this.access_state.isQtyAvailable) {
+        if (this.access_state.isPriceAvailable) this.onNumpadClick("price");
+        else if (this.access_state.isDiscountAvailable) {
           this.onNumpadClick("discount");
         }
       }
     });
 
     onMounted(() => {
-      if(!this.state.isPaymentAvailable && this.ui.isSmall) {
+      if(!this.access_state.isPaymentAvailable && this.ui.isSmall) {
         $(".switchpane.d-flex").find(".review-button").attr('style', 'width: 100% !important');
       }
     })
   },
   get productsToDisplay() { 
     const data = super.productsToDisplay;  
-    const filteredData = data.filter((ele)=>ele.pos_categ_ids.some((cat)=>!this.state.removableCategories.includes(cat.id)))
+    let self = this;
+    const filteredData = data.filter((ele)=>ele.pos_categ_ids.some((cat)=>!self.access_state.removableCategories.includes(cat.id)))
     return filteredData;
   },
   getCategoriesAndSub() {  
     let res = super.getCategoriesAndSub();
-    if (this.state.removableCategories.length) {
-      let rcats =this.state.removableCategories
+    if (this.access_state.removableCategories.length) {
+      let rcats =this.access_state.removableCategories
       res = res.filter((cat)=>!rcats.includes(cat.id));
     }
     return res 
@@ -77,16 +79,16 @@ patch(ProductScreen.prototype, {
     let data = super.getNumpadButtons(); 
     return data.map((ele) => {
       if(ele.value == "discount") {
-        ele.disabled = ele.disabled || !this.state.isDiscountAvailable;
+        ele.disabled = ele.disabled || !this.access_state.isDiscountAvailable;
       }
       if(ele.value == "quantity") {
-        ele.disabled = ele.disabled || !this.state.isQtyAvailable;
+        ele.disabled = ele.disabled || !this.access_state.isQtyAvailable;
       }
       if(ele.value == "price") {
-        ele.disabled = ele.disabled || !this.state.isPriceAvailable;
+        ele.disabled = ele.disabled || !this.access_state.isPriceAvailable;
       }
       if(ele.value == "-") {
-        ele.disabled = ele.disabled || !this.state.isPlusMinusAvailable;
+        ele.disabled = ele.disabled || !this.access_state.isPlusMinusAvailable;
       }
       return ele;
     })
