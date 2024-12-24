@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+printnode_configuration.access_printnode_configuration,access_printnode_configuration,model_printnode_configuration,base.group_user,1,1,1,1
+printer_printer.access_printer_printer,access_printer_printer,model_printer_printer,base.group_user,1,1,1,1
