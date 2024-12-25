@@ -15,6 +15,7 @@ _logger = logging.getLogger(__name__)
 
 
 class CrEscPosPrinterController(http.Controller):
+
     def get_api_key(self):
         api_key = ""
         printnode_config_id = (
@@ -28,10 +29,9 @@ class CrEscPosPrinterController(http.Controller):
     def cr_print_receipt(self, receipt):
         printer_id = False
         raw_image = receipt["img"]
-        config = receipt.get("config")
-        pos_config_id = request.env["pos.config"].sudo().browse(config)
-        if pos_config_id:
-            printer_id = pos_config_id.printer_id.printnode_printer_id if pos_config_id.printer_id else False
+        printer = int(receipt.get("printer_id")) or False
+        if printer:
+            printer_id = request.env["printer.printer"].sudo().browse(printer).printnode_printer_id if printer else False
         image = Image.open(BytesIO(base64.b64decode(raw_image)))
         printer = Dummy()
         printer.image(image)

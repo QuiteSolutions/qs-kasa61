@@ -3,18 +3,18 @@
 import { BasePrinter } from "@point_of_sale/app/printer/base_printer";
 
 export class CrPrintNodePrinter extends BasePrinter {
-    setup({rpc, config}) {
+    setup({rpc, printer_id}) {
         super.setup(...arguments);
         this.rpc = rpc;
-        this.config = config;
+        this.printer_id = printer_id;
     }
 
     async sendPrintingJob(img) {
-        if (!this.config) {
+        if (!this.printer_id) {
             return false
         }
         let receipt = {
-            'config': this.config,
+            'printer_id': this.printer_id,
             'img': img
         }        
         let result;
