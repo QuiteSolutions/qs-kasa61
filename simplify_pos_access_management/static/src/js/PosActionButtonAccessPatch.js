@@ -15,11 +15,12 @@ patch(ControlButtons.prototype, {
       isFiscalAvailable: false,
       isPriceListAvailable: false,
       isQuotationAvailable: false,
-      isCancelOrderAvailable: true,
+     // isCancelOrderAvailable: true,
     });
     onMounted(async () => {
       let res = {'hide_internal_note_button':true,'hide_customer_note_button':true,'hide_general_note_button':true,'hide_refund_button':true,'hide_quotation_button':true,
-        'hide_fiscal_button':true, 'hide_price_list_button':true, 'hide_cancel_order_button':true};
+        'hide_fiscal_button':true, 'hide_price_list_button':true};
+        //, 'hide_cancel_order_button':true
       let fields = ['hide_customer_note_button','hide_refund_button','hide_quotation_button','hide_general_note_button','hide_internal_note_button',
       'hide_fiscal_button','hide_price_list_button']
       if(this.pos.config.module_emp_acces_base){
@@ -44,7 +45,7 @@ patch(ControlButtons.prototype, {
       this.access.isFiscalAvailable = Boolean(res.hide_fiscal_button);
       this.access.isPriceListAvailable = Boolean(res.hide_price_list_button);
       this.access.isQuotationAvailable = Boolean(res.hide_quotation_button);
-      this.access.isCancelOrderAvailable = Boolean(res.hide_cancel_order_button);
+      //this.access.isCancelOrderAvailable = Boolean(res.hide_cancel_order_button);
     });
   },
 }); 
