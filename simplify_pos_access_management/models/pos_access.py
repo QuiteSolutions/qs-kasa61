@@ -46,7 +46,7 @@ class pos_access(models.Model):
     hide_quotation_button = fields.Boolean("Hide quotation button", help='Select this option to hide quotation from product screen')
     hide_fiscal_button = fields.Boolean("Hide fiscal button", help='Select this option to hide fiscal from product screen')
     hide_price_list_button = fields.Boolean("Hide price list button", help='Select this option to hide price list from product screen')
-    #hide_cancel_order_button = fields.Boolean("Hide cancel order button", help='Select this option to hide cancel order button from order screen')
+    hide_cancel_order_button = fields.Boolean("Hide cancel order button", help='Select this option to hide cancel order button from order screen')
 
     pos_payment_method_ids = fields.Many2many("pos.payment.method", "pos_access_payment_method_rel", "pos_access_id", "pos_payment_method_id", string="Restrict payment method", help='Select the payment method you want to restrict for selected user')
     pos_category_ids = fields.Many2many('pos.category', 'pos_access_rel', 'pos_access_id', 'pos_category_id', string="Restrict pos categories", help='Select the categories you want to restrict for selected user')

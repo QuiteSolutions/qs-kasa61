@@ -111,7 +111,7 @@
                                     <field name="hide_general_note_button"></field>
                                     <field name="hide_refund_button"></field>
                                     <!-- <field name="hide_save_button"></field> -->
-                                    <!-- <field name="hide_cancel_order_button"></field> -->
+                                    <field name="hide_cancel_order_button"></field>
                                     <field name="hide_quotation_button"></field>
                                     <field name="hide_fiscal_button"></field>
                                     <field name="hide_price_list_button"></field>
