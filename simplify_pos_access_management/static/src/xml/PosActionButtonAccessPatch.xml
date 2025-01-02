@@ -17,8 +17,8 @@
         <xpath expr="//t[@t-if='props.showRemainingButtons']/div/button[@t-on-click='() => this.clickRefund()']" position="attributes">
             <attribute name="t-if">access.isRefundAvailable</attribute> 
         </xpath>
-        <xpath expr="//t[@t-if='props.showRemainingButtons']/div/button[@t-on-click='() => this.pos.onDeleteOrder(this.pos.get_order())']" position="attributes">
-            <attribute name="t-if">access.isCancelOrderAvailable</attribute> 
+         <xpath expr="//button[@t-on-click='() => this.pos.onDeleteOrder(this.pos.get_order())']" position="attributes">
+            <attribute name="t-if">access.isCancelOrderAvailable</attribute>
         </xpath>
         <xpath expr="//t[@t-if='props.showRemainingButtons']/div/button[hasclass('o_fiscal_position_button')]" position="attributes">
             <attribute name="t-if">access.isFiscalAvailable</attribute>
