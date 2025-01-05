@@ -52,7 +52,8 @@ class PosSession(models.Model):
                 {'id': rec.id, 'name': rec.name, 'date_order': rec.date_order,
                  'pos_reference': rec.pos_reference,
                  'partner_id': rec.partner_id.name,
-                 'session': 'current_session'
+                 'session': 'current_session',
+                 'generale_note': rec.generale_note
                  })
         return orders
 
