@@ -5,12 +5,11 @@
         <field name="model">ir.ui.view</field>
         <field name="inherit_id" ref="point_of_sale.TicketScreen"/>
         <field name="arch" type="xml">
-            <!-- Add General Note to the header -->
+
             <xpath expr="//div[@class='header-row d-flex text-bg-700 fw-bolder']" position="inside">
                 <div class="col wide p-2">General Note</div>
             </xpath>
 
-            <!-- Add General Note to each order row -->
             <xpath expr="//div[@class='order-row']" position="inside">
                 <div class="col wide p-2">
                     <t t-esc="order.general_note || 'N/A'"/>

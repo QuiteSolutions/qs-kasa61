@@ -4,15 +4,14 @@
     'summary': 'Add a General Note column to the POS orders list.',
     'category': 'Point of Sale',
     'author': 'Alexander Gotlib',
+    'sequence': 6,
     'depends': ['point_of_sale'],
     'data': [],
     'assets': {
-        'point_of_sale.assets': [
-            'pos_display_general_note/static/src/js/pos_general_note.js',
-            'pos_display_general_note/static/src/xml/pos_templates.xml',
+        'point_of_sale._assets_pos': [
+            'pos_display_general_note/static/static/**/*',
         ],
     },
     'installable': True,
-    'application': False,
     'license': 'LGPL-3'
 }
