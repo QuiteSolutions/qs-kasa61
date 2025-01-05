@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="point_of_sale.TicketScreen"/>
         <field name="arch" type="xml">
             <!-- Add General Note to the header -->
-            <xpath expr="//div[@class='header-row']" position="inside">
+            <xpath expr="//div[@class='header-row d-flex text-bg-700 fw-bolder']" position="inside">
                 <div class="col wide p-2">General Note</div>
             </xpath>
 
