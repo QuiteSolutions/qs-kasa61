@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-extend="point_of_sale.TicketScreen">
-     <t t-jquery=".header-row" t-operation="append">
-        <div>Template Loaded</div>
+     <t t-jquery="header-row d-flex text-bg-700 fw-bolder" t-operation="append">
+        <div class="col wide p-2">Template Loaded</div>
     </t>
         <!-- Extend the header row to include the General Note column -->
-        <t t-jquery=".header-row" t-operation="append">
+        <t t-jquery="header-row d-flex text-bg-700 fw-bolder" t-operation="append">
             <div class="col wide p-2">General Note</div>
         </t>
 
