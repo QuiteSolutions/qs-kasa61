@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="pos_ticket_screen_general_note" model="ir.ui.view">
-        <field name="name">pos.ticket.screen.general.note</field>
-        <field name="model">ir.ui.view</field>
-        <field name="inherit_id" ref="point_of_sale.TicketScreen"/>
-        <field name="arch" type="xml">
-
-            <xpath expr="//div[@class='header-row d-flex text-bg-700 fw-bolder']" position="inside">
-                <div class="col wide p-2">General Note</div>
-            </xpath>
-
-            <xpath expr="//div[@class='order-row']" position="inside">
-                <div class="col wide p-2">
-                    <t t-esc="order.general_note || 'N/A'"/>
-                </div>
-            </xpath>
-        </field>
-    </record>
+    <template id="ticket_screen_inherit" inherit_id="point_of_sale.TicketScreen">
+        <xpath expr="//div[@class='header-row d-flex text-bg-700 fw-bolder']" position="inside">
+            <div class="col wide p-2">General Note</div>
+        </xpath>
+        <xpath expr="//div[@class='order-row']" position="inside">
+            <div class="col wide p-2">
+                <div><t t-esc="order.general_note or 'N/A'"/></div>
+            </div>
+        </xpath>
+    </template>
 </odoo>

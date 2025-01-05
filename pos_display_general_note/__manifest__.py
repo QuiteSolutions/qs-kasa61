@@ -6,10 +6,12 @@
     'author': 'Alexander Gotlib',
     'sequence': 6,
     'depends': ['point_of_sale'],
-    'data': [],
+    'data': [
+      'static/src/xml/pos_templates.xml',
+    ],
     'assets': {
-        'point_of_sale._assets_pos': [
-            'pos_display_general_note/static/static/**/*',
+        'point_of_sale.assets': [
+            'pos_display_general_note/static/src/js/pos_general_note.js',
         ],
     },
     'installable': True,
