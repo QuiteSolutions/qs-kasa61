@@ -47,6 +47,8 @@ class PosSession(models.Model):
             date_to = (now + relativedelta(days=-int(session_id.get('n_days'))))
             order = self.env['pos.order'].search(
                 [('date_order', '>=', date_to)])
+            print(order)
+
         for rec in order:
             orders.append(
                 {'id': rec.id, 'name': rec.name, 'date_order': rec.date_order,
@@ -69,6 +71,8 @@ class PosSession(models.Model):
             ('date_order', '<=', current_date),
             ('state', 'not in', ['draft', 'cancel'])
         ])
+        print(order)
+
         for rec in order:
             orders.append(
                 {'id': rec.id, 'name': rec.name, 'date_order': rec.date_order,
@@ -84,6 +88,7 @@ class PosSession(models.Model):
         """Retrieves all POS orders."""
         if session_id.get('session'):
             order = self.env['pos.order'].search([])
+            print(order)
         all_orders = []
         for rec in order:
             all_orders.append({
