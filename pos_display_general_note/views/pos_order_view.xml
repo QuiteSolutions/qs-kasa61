@@ -1,0 +1,13 @@
+<odoo>
+    <record id="view_pos_order_tree_inherit" model="ir.ui.view">
+        <field name="name">pos.order.tree.inherit.general.note</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+        <field name="arch" type="xml">
+            <tree string="POS Orders">
+                <!-- Add the new column for General Note -->
+                <field name="general_note"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
