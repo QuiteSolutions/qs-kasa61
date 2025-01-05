@@ -55,7 +55,7 @@ class PosSession(models.Model):
                  'pos_reference': rec.pos_reference,
                  'partner_id': rec.partner_id.name,
                  'session': 'current_session',
-                 'general_note': rec.generale_note
+                 'general_note': rec.general_note
                  })
         return orders
 
@@ -79,7 +79,7 @@ class PosSession(models.Model):
                  'pos_reference': rec.pos_reference,
                  'partner_id': rec.partner_id.name,
                  'session': 'past_order',
-                 'general_note': rec.generale_note
+                 'general_note': rec.general_note
                  })
         return orders
 
@@ -98,6 +98,6 @@ class PosSession(models.Model):
                 'pos_reference': rec.pos_reference,
                 'partner_id': rec.partner_id.name,
                 'session': rec.session_id,
-                'general_note': rec.generale_note
+                'general_note': rec.general_note
             })
         return all_orders
