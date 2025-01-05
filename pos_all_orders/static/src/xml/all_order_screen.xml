@@ -40,7 +40,7 @@
 							<t t-else="">
 								<div class="col wide p-2">
 									<div>
-										<t t-esc="order.partner_id or ''"/>
+										<t t-esc="order.general_note or ''"/>
 									</div>
 								</div>
 							</t>
