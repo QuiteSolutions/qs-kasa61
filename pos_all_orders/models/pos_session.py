@@ -47,15 +47,15 @@ class PosSession(models.Model):
             date_to = (now + relativedelta(days=-int(session_id.get('n_days'))))
             order = self.env['pos.order'].search(
                 [('date_order', '>=', date_to)])
-        # for rec in order:
-        #     orders.append(
-        #         {'id': rec.id, 'name': rec.name, 'date_order': rec.date_order,
-        #          'pos_reference': rec.pos_reference,
-        #          'partner_id': rec.partner_id.name,
-        #          'session': 'current_session',
-        #          'generale_note': rec.generale_note
-        #          })
-        return order
+        for rec in order:
+            orders.append(
+                {'id': rec.id, 'name': rec.name, 'date_order': rec.date_order,
+                 'pos_reference': rec.pos_reference,
+                 'partner_id': rec.partner_id.name,
+                 'session': 'current_session',
+                 'generale_note': rec.generale_note
+                 })
+        return orders
 
     @api.model
     def get_all_past_orders(self,session_id):
@@ -74,7 +74,8 @@ class PosSession(models.Model):
                 {'id': rec.id, 'name': rec.name, 'date_order': rec.date_order,
                  'pos_reference': rec.pos_reference,
                  'partner_id': rec.partner_id.name,
-                 'session': 'past_order'
+                 'session': 'past_order',
+                 'generale_note': rec.generale_note
                  })
         return orders
 
@@ -91,6 +92,7 @@ class PosSession(models.Model):
                 'date_order': rec.date_order,
                 'pos_reference': rec.pos_reference,
                 'partner_id': rec.partner_id.name,
-                'session': rec.session_id
+                'session': rec.session_id,
+                'generale_note': rec.generale_note
             })
         return all_orders
