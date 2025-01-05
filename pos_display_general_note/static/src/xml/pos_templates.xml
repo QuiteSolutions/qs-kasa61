@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <template id="ticket_screen_inherit" inherit_id="point_of_sale.TicketScreen">
-        <xpath expr="//div[@class='header-row d-flex text-bg-700 fw-bolder']" position="inside">
+    <data inherit_id="point_of_sale.TicketScreen">       
+         <xpath expr="//div[@class='header-row d-flex text-bg-700 fw-bolder']" position="inside">
             <div class="col wide p-2">General Note</div>
         </xpath>
         <xpath expr="//div[@class='order-row']" position="inside">
@@ -9,5 +9,5 @@
                 <div><t t-esc="order.general_note or 'N/A'"/></div>
             </div>
         </xpath>
-    </template>
+    </data>
 </odoo>
