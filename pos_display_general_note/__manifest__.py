@@ -7,7 +7,7 @@
     'sequence': 6,
     'depends': ['point_of_sale'],
     'data': [
-      'static/src/xml/pos_templates.xml',
+    #   'static/src/xml/pos_templates.xml',
     ],
     'assets': {
         'point_of_sale.assets': [
