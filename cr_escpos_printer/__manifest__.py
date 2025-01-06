@@ -34,7 +34,7 @@
     "license": "LGPL-3",
     "version": "18.0",
     "description": """This app allows user to direct print PoS receipt from self-hosted server or odoo.sh""",
-    "depends": ["point_of_sale"],
+    "depends": ["point_of_sale","pos_hr"],
     "data": [
         "security/ir.model.access.csv",
         "views/res_config_settings_views.xml",
@@ -44,9 +44,9 @@
     "installable": True,
     "auto_install": False,
     "application": True,
-    "external_dependencies": {
-        "python": ["python-escpos"],
-    },
+    # "external_dependencies": {
+    #     "python": ["python-escpos"],
+    # },
     "assets": {
         "point_of_sale._assets_pos": [
             "cr_escpos_printer/static/src/**/*",
