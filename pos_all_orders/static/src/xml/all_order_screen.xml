@@ -15,9 +15,11 @@
 					<div class="header-row d-flex text-bg-700 fw-bolder">
 						<div class="col wide p-2">Order Reference</div>
 						<div class="col wide p-2">Receipt Reference</div>
-						<div class="col wide p-2">Customer</div>
-						<div class="col p-2">Order Date</div>
+						<div class="col wide p-2">הוראות</div>
+						<div class="col p-2">תאריך ההזמנה</div>
 						<div class="col p-2">סה''כ לתשלום</div>
+						<div class="col p-2">מצב</div>
+						<div class="col p-2">מספר שולחן</div>
 					</div>
 					<t t-foreach="this.state.order" t-as="order" t-key="order.id">
 						<div class="order-row" >
@@ -53,9 +55,18 @@
 
 							<div class="col p-2">
 								<div>
-									<t t-esc="getTotal(order)"/>
+									<t t-esc="order.amount_total or ''"/>
 								</div>
 							</div>
+							<div class="col p-2">
+								<div>
+									<t t-esc="order.state or ''"/>
+								</div>
+							</div>
+							<div class="col p-2">
+								<div>
+									<t t-esc="order.table_id or ''"/>
+								</div>
 						</div>
 					</t>
 				</div>

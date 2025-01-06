@@ -6,7 +6,7 @@
         <xpath expr="//OrderlineNoteButton" position="after">
            <button class="btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="onClick">
                  <i class="fa fa-ticket"/>
-            <span>All Order's</span>
+            <span>כל ההזמנות</span>
            </button>
         </xpath>
    </t>

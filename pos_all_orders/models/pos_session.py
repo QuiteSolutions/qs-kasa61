@@ -56,7 +56,9 @@ class PosSession(models.Model):
                  'partner_id': rec.partner_id.name,
                  'session': 'current_session',
                  'general_note': rec.general_note,
-                 'get_total_with_tax': rec.get_total_with_tax()
+                 'amount_total': rec.amount_total,
+                 'state': rec.state,
+                 'table_id': rec.table_id
                  })
         return orders
 
@@ -81,7 +83,9 @@ class PosSession(models.Model):
                  'partner_id': rec.partner_id.name,
                  'session': 'past_order',
                  'general_note': rec.general_note,
-                 'get_total_with_tax': rec.get_total_with_tax()
+                 'amount_total': rec.amount_total,
+                 'state': rec.state,
+                 'table_id': rec.table_id
                  })
         return orders
 
@@ -101,6 +105,8 @@ class PosSession(models.Model):
                 'partner_id': rec.partner_id.name,
                 'session': rec.session_id,
                 'general_note': rec.general_note,
-                'get_total_with_tax': rec.get_total_with_tax()
+                'amount_total': rec.amount_total,
+                'state': rec.state,
+                'table_id': rec.table_id
             })
         return all_orders
