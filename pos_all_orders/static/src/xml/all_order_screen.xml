@@ -67,7 +67,8 @@
 								<div>
 									<t t-esc="order.table_id or ''"/>
 								</div>
-						</div>
+							</div>
+						</div> 
 					</t>
 				</div>
 			</div>

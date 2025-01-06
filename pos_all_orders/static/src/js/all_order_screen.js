@@ -21,8 +21,5 @@ class CustomALLOrdrScreen extends Component {
         this.pos.showScreen('ProductScreen');
     }
 
-    getTotal(order) {
-        return this.env.utils.formatCurrency(order.get_total_with_tax());
-    }
 }
 registry.category("pos_screens").add("CustomALLOrdrScreen", CustomALLOrdrScreen);
