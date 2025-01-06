@@ -17,6 +17,7 @@
 						<div class="col wide p-2">Receipt Reference</div>
 						<div class="col wide p-2">Customer</div>
 						<div class="col p-2">Order Date</div>
+						<div class="col p-2">סה''כ לתשלום</div>
 					</div>
 					<t t-foreach="this.state.order" t-as="order" t-key="order.id">
 						<div class="order-row" >
@@ -37,16 +38,22 @@
 									</div>
 								</div>
 							</t>
-							<t t-else="">
-								<div class="col wide p-2">
-									<div>
-										<t t-esc="order.general_note or ''"/>
-									</div>
+							
+							<div class="col wide p-2">
+								<div>
+									<t t-esc="order.general_note or ''"/>
 								</div>
-							</t>
+							</div>
+							
 							<div class="col p-2">
 								<div>
 									<t t-esc="order.date_order"/>
+								</div>
+							</div>
+
+							<div class="col p-2">
+								<div>
+									<t t-esc="getTotal(order)"/>
 								</div>
 							</div>
 						</div>
