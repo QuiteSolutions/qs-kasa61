@@ -12,7 +12,7 @@ class Printer(models.Model):
     computer = fields.Char()
     printnode_printer_id = fields.Char()
     active = fields.Boolean(default=True)
-    printnode_config_id = fields.Many2one("printnode.configuration")
+    printnode_config_id = fields.Many2one("printnode.configuration", ondelete="cascade")
 
     @api.model
     def _load_pos_data_fields(self, config_id):
