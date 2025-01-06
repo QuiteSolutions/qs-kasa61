@@ -21,6 +21,7 @@ class CustomALLOrdrScreen extends Component {
         this.pos.showScreen('ProductScreen');
     }
     getTable(order) {
+        console.log("order", order);
         if (order.table_id) {
             const tableMatch = order.table_id.match(/\((\d+),/);
             if (tableMatch) {

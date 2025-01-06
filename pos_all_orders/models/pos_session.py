@@ -58,7 +58,7 @@ class PosSession(models.Model):
                  'general_note': rec.general_note,
                  'amount_total': rec.amount_total,
                  'state': rec.state,
-                 'table': rec.table_id
+                 'table_id': rec.table_id
                  })
         return orders
 
@@ -85,7 +85,7 @@ class PosSession(models.Model):
                  'general_note': rec.general_note,
                  'amount_total': rec.amount_total,
                  'state': rec.state,
-                 'table': rec.table_id
+                 'table_id': rec.table_id
                  })
         return orders
 
@@ -107,7 +107,7 @@ class PosSession(models.Model):
                 'general_note': rec.general_note,
                 'amount_total': rec.amount_total,
                 'state': rec.state,
-                'table': rec.table_id
+                'table_id': rec.table_id
             })
            
         return all_orders
