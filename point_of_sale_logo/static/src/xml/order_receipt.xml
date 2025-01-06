@@ -3,12 +3,8 @@
 <templates id="point_of_sale.template" xml:space="preserve">
     <t t-inherit="point_of_sale.OrderChangeReceipt" t-inherit-mode="extension"
        owl="1">
-        <xpath expr="//div[hasclass('pos-receipt')]/ReceiptHeader"
-               position="before">
-            <t t-log="this.env.services.pos.config.id"/>
-            <img t-if="this.env.services.pos.config.image"
-                 t-attf-src="/web/image?model=pos.config&amp;field=image&amp;id={{ this.env.services.pos.config.id }}"
-                 style="width:50%"/>
+        <xpath expr="//span[@class='product-name']" position="attributes">
+            <attribute name="style">font-size: 150%;</attribute>
         </xpath>
     </t>
 </templates>
