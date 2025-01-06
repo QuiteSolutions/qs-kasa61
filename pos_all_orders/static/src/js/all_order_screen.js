@@ -20,6 +20,20 @@ class CustomALLOrdrScreen extends Component {
      // on clicking the back button it will redirected Product screen
         this.pos.showScreen('ProductScreen');
     }
-
+    getTable(order) {
+        if (order.table_id) {
+            const tableMatch = order.table_id.match(/\((\d+),/);
+            if (tableMatch) {
+                return parseInt(tableMatch[1], 10); 
+            }
+        }
+        return ''; 
+    }
+    getAmount(order) {
+        if (order.amount_total) {
+            return parseFloat(order.amount_total).toFixed(2); 
+        }
+        return ''; 
+    }
 }
 registry.category("pos_screens").add("CustomALLOrdrScreen", CustomALLOrdrScreen);

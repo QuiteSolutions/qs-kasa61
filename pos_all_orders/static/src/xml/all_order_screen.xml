@@ -13,33 +13,20 @@
 				<br/>
 				<div class="orders overflow-y-auto flex-grow-1">
 					<div class="header-row d-flex text-bg-700 fw-bolder">
-						<div class="col wide p-2">Order Reference</div>
-						<div class="col wide p-2">Receipt Reference</div>
-						<div class="col wide p-2">הוראות</div>
 						<div class="col p-2">תאריך ההזמנה</div>
+						<div class="col wide p-2">הוראות</div>
 						<div class="col p-2">סה''כ לתשלום</div>
 						<div class="col p-2">מצב</div>
 						<div class="col p-2">מספר שולחן</div>
 					</div>
 					<t t-foreach="this.state.order" t-as="order" t-key="order.id">
 						<div class="order-row" >
-							<div class="col wide p-2 ">
+							
+							<div class="col p-2">
 								<div>
-									<t t-esc="order.pos_reference"/>
+									<t t-esc="order.date_order"/>
 								</div>
 							</div>
-							<div class="col wide p-2">
-								<div>
-									<t t-esc="order.name"/>
-								</div>
-							</div>
-							<t t-if="order.session == 'current_session'">
-								<div class="col wide p-2">
-									<div>
-										<t t-esc="order.partner_id or ''"/>
-									</div>
-								</div>
-							</t>
 							
 							<div class="col wide p-2">
 								<div>
@@ -47,25 +34,22 @@
 								</div>
 							</div>
 							
+
 							<div class="col p-2">
 								<div>
-									<t t-esc="order.date_order"/>
+									<t t-if="order.amount_total or ''"  t-esc="getAmount(order)"/>
 								</div>
 							</div>
 
 							<div class="col p-2">
 								<div>
-									<t t-esc="order.amount_total or ''"/>
-								</div>
-							</div>
-							<div class="col p-2">
-								<div>
 									<t t-esc="order.state or ''"/>
 								</div>
 							</div>
+
 							<div class="col p-2">
 								<div>
-									<t t-esc="order.table_id or ''"/>
+									<t t-if="order.table_id or ''" t-esc="getTable(order)"/>
 								</div>
 							</div>
 						</div> 
