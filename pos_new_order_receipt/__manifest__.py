@@ -5,11 +5,12 @@
     "summary": "Wounded Souls General Customization",
     "author": "Odooistic",
     "depends": ['product'],
-    "data": [],
+    "data": [
+        'views/pos_customizations.xml',
+    ],
     'assets': {
         'point_of_sale.assets': [
-            'pos_new_order_receipt/static/src/js/**/*',
-            'pos_new_order_receipt/static/src/xml/**/*',
+            'pos_new_order_receipt/static/src/js/client_name.js',
         ],
     },
     "installable": True,

@@ -1,18 +1,10 @@
-odoo.define('pos_new_order_receipt', function (require) {
+/** @odoo-module **/
+import { PosStore } from 'point_of_sale.PosStore';
 
-  'use strict';
-
-  var {Order} = require
-  var Registries = require('point_of_sale.Registries');
-
-  const CustomOrder = (Order) => class CustomOrder extends Order {
-    
-    export_for_printing() {
-      const res = super.export_for_printing(...arguments);
-      res.client_name = this.get_partner();
-      return res;
-    }
-  }
-
-  Registries.Model.extend(Order, CustomOrder);
+PosStore.include({
+    init: function () {
+        this._super.apply(this, arguments);
+        console.log("Custom POS Store initialized!");
+    },
+    // Override or extend methods as needed
 });
