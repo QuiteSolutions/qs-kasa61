@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates id="template" xml:space="preserve">
-    <t t-name="Numpad" t-inherit="point_of_sale.Numpad" t-inherit-mode="extension">
-        <xpath expr="//div[@t-attf-class='d-grid numpad numpad-{{buttons.length / 4}}-cols m-n1 {{props.class}}']" position="attributes">
-            <attribute name="t-if">access_state.isNumpadAvailable</attribute>
-        </xpath>
-    </t>
-</templates>
