@@ -3,8 +3,8 @@
 <templates id="point_of_sale.template" xml:space="preserve">
     <t t-inherit="point_of_sale.OrderChangeReceipt" t-inherit-mode="extension"
        owl="1">
-        <xpath expr="//span[@class='product-name']" position="attributes">
+        <!-- <xpath expr="//span[@class='product-name']" position="attributes">
             <attribute name="style">font-size: 150%;</attribute>
-        </xpath>
+        </xpath> -->
     </t>
 </templates>
