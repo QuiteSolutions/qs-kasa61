@@ -3,8 +3,14 @@
 <templates id="point_of_sale.template" xml:space="preserve">
     <t t-inherit="point_of_sale.OrderChangeReceipt" t-inherit-mode="extension"
        owl="1">
-        <!-- <xpath expr="//span[@class='product-name']" position="attributes">
+        <xpath expr="//div[@class='fs-2']/span[t-esc='changes.time']" position="replace">
+            <span>
+                <t t-esc="changes.config_name"/> : 
+                <t t-esc="(changes.time + relativedelta(hours=2)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            </span><br/>
+        </xpath>
+        <xpath expr="//span[@class='product-name']" position="attributes">
             <attribute name="style">font-size: 150%;</attribute>
-        </xpath> -->
+        </xpath>
     </t>
 </templates>
