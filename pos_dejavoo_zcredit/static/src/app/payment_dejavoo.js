@@ -49,12 +49,29 @@ export class PaymentDejavoo extends PaymentInterface {
                 line.set_payment_status("rejected");
                 return false;
             }
+
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data?.ClientRecieptPP, 'text/xml');
+        
+            // Extract all <w> tags which contain <l> and <r>
+            const keyValuePairs = {};
+            const entries = doc.getElementsByTagName('w');
+        
+            for (let entry of entries) {
+                const key = entry.getElementsByTagName('l')[0]?.textContent?.trim();
+                const value = entry.getElementsByTagName('r')[0]?.textContent?.trim();
+                if (key && value) {
+                    keyValuePairs[key] = value;
+                }
+            }
+
             this.payment_intent = data;
             line.payment_method_issuer_bank = data?.CardBIN;
             line.card_brand = data?.CardName;
             line.card_no = data?.Card4Digits
             line.transaction_id = data?.ApprovalNumber;
-            line.set_receipt_info(parseClientRecieptPP(data?.ClientRecieptPP))
+            line.set_receipt_info(keyValuePairs)
             line.set_payment_status("done");
             this._showMsg(_t("Payment has been processed successfully"), "info");
             return true;
