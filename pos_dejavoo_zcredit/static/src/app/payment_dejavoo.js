@@ -49,7 +49,6 @@ export class PaymentDejavoo extends PaymentInterface {
                 line.set_payment_status("rejected");
                 return false;
             }
-            // Payment intent creation successfull, save it
             this.payment_intent = data;
             line.payment_method_issuer_bank = data?.CardBIN;
             line.card_brand = data?.CardName;
