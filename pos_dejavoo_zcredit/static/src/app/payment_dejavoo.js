@@ -43,15 +43,19 @@ export class PaymentDejavoo extends PaymentInterface {
             // During payment creation, user can't cancel the payment intent
             line.set_payment_status("waitingCapture");
             // Call Dejavoo to create a payment intent
-            const payment_intent = await this.create_payment_intent();
-            if (payment_intent.HasError) {
-                this._showMsg(payment_intent.ReturnMessage, "error");
+            const data = await this.create_payment_intent();
+            if (data.HasError) {
+                this._showMsg(data.ReturnMessage, "error");
                 line.set_payment_status("rejected");
                 return false;
             }
             // Payment intent creation successfull, save it
-            this.payment_intent = payment_intent;
-      
+            this.payment_intent = data;
+            line.payment_method_issuer_bank = data?.CardBIN;
+            line.card_brand = data?.CardName;
+            line.card_no = data?.Card4Digits
+            line.transaction_id = data?.ApprovalNumber;
+            line.set_receipt_info(data?.ClientRecieptPP)
             line.set_payment_status("done");
             this._showMsg(_t("Payment has been processed successfully"), "info");
             return true;
@@ -87,3 +91,4 @@ export class PaymentDejavoo extends PaymentInterface {
         });
     }
 }
+
