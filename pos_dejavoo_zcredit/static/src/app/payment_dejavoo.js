@@ -66,12 +66,16 @@ export class PaymentDejavoo extends PaymentInterface {
                 }
             }
 
+            let formattedString = '';
+            for (const [key, value] of Object.entries(keyValuePairs)) {
+                formattedString += `${key}: ${value}\n`;
+            }
             this.payment_intent = data;
             line.payment_method_issuer_bank = data?.CardBIN;
             line.card_brand = data?.CardName;
             line.card_no = data?.Card4Digits
             line.transaction_id = data?.ApprovalNumber;
-            line.set_receipt_info(keyValuePairs)
+            line.set_receipt_info(formattedString.trim())
             line.set_payment_status("done");
             this._showMsg(_t("Payment has been processed successfully"), "info");
             return true;
