@@ -54,7 +54,7 @@ export class PaymentDejavoo extends PaymentInterface {
             line.card_brand = data?.CardName;
             line.card_no = data?.Card4Digits
             line.transaction_id = data?.ApprovalNumber;
-            line.set_receipt_info(data?.ClientRecieptPP)
+            line.set_receipt_info(parseClientRecieptPP(data?.ClientRecieptPP))
             line.set_payment_status("done");
             this._showMsg(_t("Payment has been processed successfully"), "info");
             return true;
@@ -63,6 +63,26 @@ export class PaymentDejavoo extends PaymentInterface {
             line.set_payment_status("error");
             return false;
         }
+    }
+
+    parseClientRecieptPP(receiptString) {
+        // Create a DOM parser
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(receiptString, 'text/xml');
+    
+        // Extract all <w> tags which contain <l> and <r>
+        const keyValuePairs = {};
+        const entries = doc.getElementsByTagName('w');
+    
+        for (let entry of entries) {
+            const key = entry.getElementsByTagName('l')[0]?.textContent?.trim();
+            const value = entry.getElementsByTagName('r')[0]?.textContent?.trim();
+            if (key && value) {
+                keyValuePairs[key] = value;
+            }
+        }
+    
+        return keyValuePairs;
     }
 
     async send_payment_cancel(order, cid) {
