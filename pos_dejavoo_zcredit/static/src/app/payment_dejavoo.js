@@ -55,21 +55,16 @@ export class PaymentDejavoo extends PaymentInterface {
             const doc = parser.parseFromString(data?.ClientRecieptPP, 'text/xml');
         
             // Extract all <w> tags which contain <l> and <r>
-            const keyValuePairs = {};
-            const entries = doc.getElementsByTagName('w');
-        
-            for (let entry of entries) {
-                const key = entry.getElementsByTagName('l')[0]?.textContent?.trim();
-                const value = entry.getElementsByTagName('r')[0]?.textContent?.trim();
-                if (key && value) {
-                    keyValuePairs[key] = value;
-                }
-            }
-
+            const regex = /<l>(.*?)<\/l><r>(.*?)<\/r>/g;
+            let match;
             let formattedString = '';
-            for (const [key, value] of Object.entries(keyValuePairs)) {
-                formattedString += `${key}: ${value}\n`;
+
+            while ((match = regex.exec(ClientRecieptPP)) !== null) {
+                const key = match[1]; // Extracted key
+                const value = match[2]; // Extracted value
+                formattedString += `${key}: ${value}\n`; // Format key-value pair
             }
+            
             this.payment_intent = data;
             line.payment_method_issuer_bank = data?.CardBIN;
             line.card_brand = data?.CardName;
