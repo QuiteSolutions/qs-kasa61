@@ -51,15 +51,13 @@ export class PaymentDejavoo extends PaymentInterface {
             }
 
 
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(data?.ClientRecieptPP, 'text/xml');
         
             // Extract all <w> tags which contain <l> and <r>
             const regex = /<l>(.*?)<\/l><r>(.*?)<\/r>/g;
             let match;
             let formattedString = '';
 
-            while ((match = regex.exec(ClientRecieptPP)) !== null) {
+            while ((match = regex.exec(data?.ClientRecieptPP)) !== null) {
                 const key = match[1]; // Extracted key
                 const value = match[2]; // Extracted value
                 formattedString += `${key}: ${value}\n`; // Format key-value pair
