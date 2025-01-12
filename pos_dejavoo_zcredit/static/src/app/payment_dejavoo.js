@@ -64,7 +64,7 @@ export class PaymentDejavoo extends PaymentInterface {
             line.payment_method_issuer_bank = data?.CardBIN;
             line.card_brand = data?.CardName;
             line.card_no = data?.Card4Digits
-            line.transaction_id = data?.ApprovalNumber;
+            line.transaction_id = data?.ReferenceNumber;
             line.set_receipt_info(formattedString.trim())
             line.set_payment_status("done");
             this._showMsg(_t("Payment has been processed successfully"), "info");
