@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="cr_escpos_printer.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//SelectPartnerButton" position="after">
+            <button t-if="!props.showRemainingButtons"
+                class="btn btn-light btn-lg flex-shrink-0 ms-auto"
+                t-on-click="() => this.crSetPrinter()">
+
+                <t t-out="pos.crprinter?.name || currentPrinterName"/>
+            </button>
+        </xpath>
+    </t>
+</templates>
