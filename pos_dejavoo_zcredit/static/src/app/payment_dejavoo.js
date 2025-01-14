@@ -61,7 +61,8 @@ export class PaymentDejavoo extends PaymentInterface {
             try{
                 line.set_payment_status("waitingCapture");
 
-                this._showMsg(line.transaction_id, "info");
+                console.log(this.pos.get_order());
+                this._showMsg(this.pos.get_order(), "info");
                 const data = await this.create_refund_intent();
                 if (data.HasError) {
                     this._showMsg(data.ReturnMessage, "error");
