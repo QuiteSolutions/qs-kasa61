@@ -14,7 +14,7 @@ class DejavoPosRequest:
         self.dejavoo_terminal_pwd = dj_terminal_pwd
         self.dejavoo_terminal_pinpad = dj_terminal_pinpad
 
-    def call_dejavoo(self, endpoint, payload):
+    def call_dejavoo(self, endpoint, payload,is_refund=False):
 
         """ Make a request to Z-Credit API Gateway to interact with dejavoo terminal.
         :param endpoint: The endpoint to be reached by the request.
@@ -24,7 +24,10 @@ class DejavoPosRequest:
         
         payload["TerminalNumber"] = self.dejavoo_terminal_number
         payload["Password"] = self.dejavoo_terminal_pwd
-        payload["Track2"] = self.dejavoo_terminal_pinpad
+        if not is_refund:
+            payload["Track2"] = self.dejavoo_terminal_pinpad
+        
+
 
         endpoint = ZCREDIT_API_ENDPOINT + endpoint
         header = {
