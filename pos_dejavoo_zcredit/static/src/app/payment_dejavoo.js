@@ -28,7 +28,7 @@ export class PaymentDejavoo extends PaymentInterface {
         const line = order.get_selected_paymentline();
         // Build informations for creating a payment intend on Dejavoo.
         const infos = {
-            TransactionSum: line.amount,
+            TransactionSum: line.amount * -1,
             TransactionIdToCancelOrRefund: line.transaction_id,
             additional_info: {
                 external_reference: `${this.pos.config.current_session_id.id}_${line.payment_method_id.id}_${order.uuid}`,
