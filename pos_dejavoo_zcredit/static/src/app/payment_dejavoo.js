@@ -25,11 +25,14 @@ export class PaymentDejavoo extends PaymentInterface {
 
     async create_refund_intent() {
         const order = this.pos.get_order();
-        const line = order.get_selected_paymentline();
+        const paymentLines = this.pos.get_order().get_paymentlines();
+
+        const paymentLineWithTransaction = paymentLines.find(line => line.transaction_id && line.transaction_id.trim() !== '');
+
         // Build informations for creating a payment intend on Dejavoo.
         const infos = {
             TransactionSum: line.amount * -1,
-            TransactionIdToCancelOrRefund: line.transaction_id,
+            TransactionIdToCancelOrRefund: paymentLineWithTransaction.transaction_id,
             additional_info: {
                 external_reference: `${this.pos.config.current_session_id.id}_${line.payment_method_id.id}_${order.uuid}`,
                 print_on_terminal: true,
