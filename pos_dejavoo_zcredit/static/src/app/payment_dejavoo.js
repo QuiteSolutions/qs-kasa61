@@ -67,6 +67,7 @@ export class PaymentDejavoo extends PaymentInterface {
                 }
                 line.set_payment_status("done");
                 this._showMsg(_t("Payment has been processed successfully"), "info");
+                return true;
             }catch (error) {
                 this._showMsg(_t("An error occurred while processing the payment: ") + error.message, "error");
                 line.set_payment_status("error");
