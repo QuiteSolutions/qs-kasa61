@@ -29,11 +29,13 @@ export class PaymentDejavoo extends PaymentInterface {
         const order = this.pos.get_order();
     
         // Prompt user for the transaction ID
-        const result = await this._showMsgWithInput(
-            "Please enter the Transaction ID for the refund:",
-            "Enter Transaction ID"
-        );
+        // const result = await this._showMsgWithInput(
+        //     "Please enter the Transaction ID for the refund:",
+        //     "Enter Transaction ID"
+        // );
     
+        let foo = prompt('Type here');
+        let bar = confirm('Confirm or deny');   
         if (!result || !result.confirmed) {
             console.warn("Transaction ID input was canceled.");
             return false;
@@ -46,11 +48,12 @@ export class PaymentDejavoo extends PaymentInterface {
         if (!line) {
             throw new Error("No payment line is selected.");
         }
+
     
         // Build refund intent
         const infos = {
             TransactionSum: line.amount * -1,
-            TransactionIdToCancelOrRefund: transactionId,
+            TransactionIdToCancelOrRefund: foo,
             additional_info: {
                 external_reference: `${this.pos.config.current_session_id.id}_${line.payment_method_id.id}_${order.uuid}`,
                 print_on_terminal: true,
