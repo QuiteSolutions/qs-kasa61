@@ -2,8 +2,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { PaymentInterface } from "@point_of_sale/app/payment/payment_interface";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-const { Dialog } = require("@web/core/dialog/dialog");
-const { useState } = owl;
+import { InputDialog } from "./InputDialog";
 
 export class PaymentDejavoo extends PaymentInterface {
     async create_payment_intent() {
@@ -29,21 +28,19 @@ export class PaymentDejavoo extends PaymentInterface {
     async create_refund_intent() {
         const order = this.pos.get_order();
 
-    // Create a dialog for manual input
-    const result = await this.showPopup("ManualInputPopup", {
-        title: "Enter Transaction ID",
-        body: "Please enter the Transaction ID for the refund:",
-        confirmText: "Confirm",
-        cancelText: "Cancel",
-    });
+    // Show input dialog to get the transaction ID
+    const result = await this._showMsgWithInput(
+        "Please enter the Transaction ID for the refund:",
+        "Enter Transaction ID"
+    );
 
-    if (!result) {
-        console.warn("User canceled the manual input for Transaction ID.");
+    if (!result || !result.confirmed) {
+        console.warn("Transaction ID input was canceled.");
         return false;
     }
 
     const transactionId = result.value;
-    console.log("User Input Transaction ID:", transactionId);
+    console.log("User entered Transaction ID:", transactionId);
 
     const line = order.get_selected_paymentline();
     if (!line) {
@@ -82,7 +79,6 @@ export class PaymentDejavoo extends PaymentInterface {
             try{
                 line.set_payment_status("waitingCapture");
 
-                this._showMsg(this.pos.get_order(), "info");
                 const data = await this.create_refund_intent();
                 if (data.HasError) {
                     this._showMsg(data.ReturnMessage, "error");
@@ -162,6 +158,16 @@ export class PaymentDejavoo extends PaymentInterface {
         this.env.services.dialog.add(AlertDialog, {
             title: "Z-Credit v1 " + title,
             body: msg,
+        });
+    }
+
+    _showMsgWithInput(msg, title) {
+        return new Promise((resolve) => {
+            this.env.services.dialog.add(InputDialog, {
+                title: "Z-Credit v1 " + title,
+                body: msg,
+                resolve,
+            });
         });
     }
 }
