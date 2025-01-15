@@ -27,43 +27,44 @@ export class PaymentDejavoo extends PaymentInterface {
 
     async create_refund_intent() {
         const order = this.pos.get_order();
-
-    // Show input dialog to get the transaction ID
-    const result = await this._showMsgWithInput(
-        "Please enter the Transaction ID for the refund:",
-        "Enter Transaction ID"
-    );
-
-    if (!result || !result.confirmed) {
-        console.warn("Transaction ID input was canceled.");
-        return false;
-    }
-
-    const transactionId = result.value;
-    console.log("User entered Transaction ID:", transactionId);
-
-    const line = order.get_selected_paymentline();
-    if (!line) {
-        throw new Error("No payment line is selected.");
-    }
-
-        // Build informations for creating a payment intend on Dejavoo.
+    
+        // Prompt user for the transaction ID
+        const result = await this._showMsgWithInput(
+            "Please enter the Transaction ID for the refund:",
+            "Enter Transaction ID"
+        );
+    
+        if (!result || !result.confirmed) {
+            console.warn("Transaction ID input was canceled.");
+            return false;
+        }
+    
+        const transactionId = result.value;
+        console.log("User entered Transaction ID:", transactionId);
+    
+        const line = order.get_selected_paymentline();
+        if (!line) {
+            throw new Error("No payment line is selected.");
+        }
+    
+        // Build refund intent
         const infos = {
             TransactionSum: line.amount * -1,
-            TransactionIdToCancelOrRefund: paymentLineWithTransaction.transaction_id,
+            TransactionIdToCancelOrRefund: transactionId,
             additional_info: {
                 external_reference: `${this.pos.config.current_session_id.id}_${line.payment_method_id.id}_${order.uuid}`,
                 print_on_terminal: true,
             },
         };
-        // dj_payment_intent_create will call the Z-Credit api gateway to interact with Dejavoo terminal
+    
+        // Call the refund API
         return await this.env.services.orm.silent.call(
             "pos.payment.method",
             "dj_payment_refund_create",
             [[line.payment_method_id.id], infos]
         );
     }
-
+    
     setup() {
         super.setup(...arguments);
         this.webhook_resolver = null;
@@ -166,7 +167,7 @@ export class PaymentDejavoo extends PaymentInterface {
             this.env.services.dialog.add(InputDialog, {
                 title: "Z-Credit v1 " + title,
                 body: msg,
-                resolve,
+                resolve, // Pass the resolve function to the dialog
             });
         });
     }

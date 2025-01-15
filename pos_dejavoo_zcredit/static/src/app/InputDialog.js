@@ -1,6 +1,7 @@
+/** InputDialog.js */
 import { Dialog } from "@web/core/dialog/dialog";
 import { useState } from "@odoo/owl";
-import { xml } from "@odoo/owl"; // Import the xml function
+import { xml } from "@odoo/owl";
 
 export class InputDialog extends Dialog {
     setup() {
@@ -8,26 +9,28 @@ export class InputDialog extends Dialog {
         this.state = useState({ inputValue: "" });
     }
 
-    // Handle input changes
-    onInputChange(event) {
-        this.state.inputValue = event.target.value;
+    // Handle input change
+    onInputChange(ev) {
+        this.state.inputValue = ev.target.value;
     }
 
-    // Confirm action and return the input value
+    // Confirm input and resolve the promise
     onConfirm() {
         this.props.resolve({ confirmed: true, value: this.state.inputValue });
         this.props.close();
     }
 
-    // Cancel action
+    // Cancel input and resolve the promise
     onCancel() {
         this.props.resolve({ confirmed: false });
         this.props.close();
     }
 }
+
+// Define the dialog's template with slots
 InputDialog.template = xml`
-    <div>
-        <div class="dialog-body">
+    <Dialog>
+        <div t-slot="body">
             <p><t t-esc="props.body"/></p>
             <input
                 type="text"
@@ -36,9 +39,9 @@ InputDialog.template = xml`
                 t-on-input="onInputChange"
             />
         </div>
-        <div class="dialog-footer">
+        <div t-slot="footer">
             <button class="btn btn-primary" t-on-click="onConfirm">Confirm</button>
             <button class="btn btn-secondary" t-on-click="onCancel">Cancel</button>
         </div>
-    </div>
+    </Dialog>
 `;
