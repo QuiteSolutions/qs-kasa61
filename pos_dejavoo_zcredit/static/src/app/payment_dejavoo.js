@@ -6,6 +6,7 @@ import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 export class PaymentDejavoo extends PaymentInterface {
     async create_payment_intent() {
         const order = this.pos.get_order();
+        console.log("order", order.id);
         const line = order.get_selected_paymentline();
         // Build informations for creating a payment intend on Dejavoo.
         const infos = {
@@ -25,6 +26,7 @@ export class PaymentDejavoo extends PaymentInterface {
 
     async create_refund_intent() {
         const order = this.pos.get_order();
+        console.log("order", order.id);
         const paymentLineWithTransaction = this.pos.get_order().payment_ids.find(
             (line) => line.transaction_id && line.transaction_id.trim() !== ''
         );;
@@ -61,7 +63,6 @@ export class PaymentDejavoo extends PaymentInterface {
             try{
                 line.set_payment_status("waitingCapture");
 
-                console.log(this.pos.get_order());
                 this._showMsg(this.pos.get_order(), "info");
                 const data = await this.create_refund_intent();
                 if (data.HasError) {
