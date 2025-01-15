@@ -1,5 +1,6 @@
 import { Dialog } from "@web/core/dialog/dialog";
 import { useState } from "@odoo/owl";
+import { xml } from "@odoo/owl"; // Import the xml function
 
 export class InputDialog extends Dialog {
     setup() {
