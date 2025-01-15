@@ -46,5 +46,21 @@ class PosPaymentMethod(models.Model):
         resp = dejavoo.call_dejavoo(f"CommitFullTransaction", infos)
         _logger.debug("dj_payment_intent_create(), response from Dejavoo: %s", resp)
         return resp
+    
+    def dj_payment_refund_create(self, infos):
+        """
+        Called from Dejavoo hardware for creating a payment intent
+        """
+        self._check_special_access()
+
+        dejavoo_terminal_number = self.sudo().dj_terminal_number
+        dejavoo_terminal_pwd = self.sudo().dj_terminal_pwd
+        dejavoo_terminal_pinpad = self.sudo().dj_terminal_pinpad
+
+        dejavoo = DejavoPosRequest(dejavoo_terminal_number, dejavoo_terminal_pwd, dejavoo_terminal_pinpad)
+        # Triger Dejavoo terminal for payment intend creation
+        resp = dejavoo.call_dejavoo(f"RefundTransaction", infos,is_refund=True)
+        _logger.debug("dj_payment_intent_create(), response from Dejavoo: %s", resp)
+        return resp
 
 

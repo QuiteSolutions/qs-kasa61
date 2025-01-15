@@ -7,7 +7,6 @@ export class PaymentDejavoo extends PaymentInterface {
     async create_payment_intent() {
         const order = this.pos.get_order();
         const line = order.get_selected_paymentline();
-        // Build informations for creating a payment intend on Dejavoo.
         const infos = {
             TransactionSum: line.amount,
             additional_info: {
@@ -15,7 +14,6 @@ export class PaymentDejavoo extends PaymentInterface {
                 print_on_terminal: true,
             },
         };
-        // dj_payment_intent_create will call the Z-Credit api gateway to interact with Dejavoo terminal
         return await this.env.services.orm.silent.call(
             "pos.payment.method",
             "dj_payment_intent_create",
@@ -23,6 +21,30 @@ export class PaymentDejavoo extends PaymentInterface {
         );
     }
 
+    async create_refund_intent(transactionId) {
+        const order = this.pos.get_order();
+    
+        const line = order.get_selected_paymentline();
+        if (!line) {
+            throw new Error("No payment line is selected.");
+        }
+    
+        const infos = {
+            TransactionSum: line.amount * -1,
+            TransactionIdToCancelOrRefund: transactionId,
+            additional_info: {
+                external_reference: `${this.pos.config.current_session_id.id}_${line.payment_method_id.id}_${order.uuid}`,
+                print_on_terminal: true,
+            },
+        };
+    
+        return await this.env.services.orm.silent.call(
+            "pos.payment.method",
+            "dj_payment_refund_create",
+            [[line.payment_method_id.id], infos]
+        );
+    }
+    
     setup() {
         super.setup(...arguments);
         this.webhook_resolver = null;
@@ -35,23 +57,65 @@ export class PaymentDejavoo extends PaymentInterface {
 
 
         if (line.amount < 0) {
-            this._show_error(_t("Cannot process transactions with negative amount."));
-            return Promise.resolve();
+            try{
+                line.set_payment_status("waitingCapture");
+
+                
+                let transaction_id = prompt('הכנס מספר עסקה');
+                let bar = confirm(`מספר עסקה : ${transaction_id} \n סכום לזיכוי: ${line.amount} \n האם אתה בטוח שברצונך לבצע את הזיכוי?`);
+
+                if (!bar) {
+                    this._showMsg(_t("Payment has been canceled by the user"), "info");
+                    line.set_payment_status("rejected");
+                    return false;
+                }
+
+                const data = await this.create_refund_intent(transaction_id);
+                if (data.HasError) {
+                    this._showMsg(data.ReturnMessage, "error");
+                    line.set_payment_status("rejected");
+                    return false;
+                }
+                line.set_payment_status("done");
+                this._showMsg(_t("Payment has been processed successfully"), "info");
+                return true;
+            }catch (error) {
+                this._showMsg(_t("An error occurred while processing the payment: ") + error.message, "error");
+                line.set_payment_status("error");
+                return false;
+            }
         }
 
         try {
             // During payment creation, user can't cancel the payment intent
             line.set_payment_status("waitingCapture");
             // Call Dejavoo to create a payment intent
-            const payment_intent = await this.create_payment_intent();
-            if (payment_intent.HasError) {
-                this._showMsg(payment_intent.ReturnMessage, "error");
+            const data = await this.create_payment_intent();
+            if (data.HasError) {
+                this._showMsg(data.ReturnMessage, "error");
                 line.set_payment_status("rejected");
                 return false;
             }
-            // Payment intent creation successfull, save it
-            this.payment_intent = payment_intent;
-      
+
+
+        
+            const regex = /<l>(.*?)<\/l><r>(.*?)<\/r>/g;
+            let match;
+            let formattedString = '';
+            
+            formattedString += `${"מספר עסקה"}: ${data?.ReferenceNumber}\n`;
+            while ((match = regex.exec(data?.ClientRecieptPP)) !== null) {
+                const key = match[1]; 
+                const value = match[2]; 
+                formattedString += `${key}: ${value}\n`; 
+            }
+            
+            this.payment_intent = data;
+            line.payment_method_issuer_bank = data?.CardBIN;
+            line.card_brand = data?.CardName;
+            line.card_no = data?.Card4Digits
+            line.transaction_id = data?.ReferenceNumber;
+            line.set_receipt_info(formattedString.trim())
             line.set_payment_status("done");
             this._showMsg(_t("Payment has been processed successfully"), "info");
             return true;
@@ -86,5 +150,6 @@ export class PaymentDejavoo extends PaymentInterface {
             body: msg,
         });
     }
+
 }
 
