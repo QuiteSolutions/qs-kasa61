@@ -9,6 +9,10 @@
                 <div class="content-group" invisible="not other_devices">
                     <field name="printer_id" placeholder="Select thermal printer"/>
                 </div>
+                <div id="escpos_cashdrawer" string="Cash Drawer" help="Automatically open cash drawer at receipt printing.">
+                    <field name="iface_cashdrawer"/>
+                    <span class="text-muted">Automatically open cash drawer at receipt printing.</span>
+                </div>
             </xpath>
         </field>
     </record>

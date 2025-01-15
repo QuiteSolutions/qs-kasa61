@@ -92,11 +92,12 @@ export class PaymentDejavoo extends PaymentInterface {
             // Call Dejavoo to create a payment intent
             const data = await this.create_payment_intent();
             if (data.HasError) {
+            
                 this._showMsg(data.ReturnMessage, "error");
                 line.set_payment_status("rejected");
                 return false;
+            
             }
-
 
         
             const regex = /<l>(.*?)<\/l><r>(.*?)<\/r>/g;
@@ -152,4 +153,3 @@ export class PaymentDejavoo extends PaymentInterface {
     }
 
 }
-
