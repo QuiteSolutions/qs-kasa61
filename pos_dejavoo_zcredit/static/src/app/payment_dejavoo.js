@@ -163,13 +163,13 @@ export class PaymentDejavoo extends PaymentInterface {
     }
 
     _showMsgWithInput(msg, title) {
-        return new Promise((resolve) => {
+        // return new Promise((resolve) => {
             this.env.services.dialog.add(InputDialog, {
                 title: "Z-Credit v1 " + title,
                 body: msg,
-                resolve, // Pass the resolve function to the dialog
+                 // Pass the resolve function to the dialog
             });
-        });
+        // });
     }
 }
 

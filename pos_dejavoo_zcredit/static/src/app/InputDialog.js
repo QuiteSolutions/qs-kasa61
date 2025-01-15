@@ -16,14 +16,17 @@ export class InputDialog extends Dialog {
 
     // Confirm input and resolve the promise
     onConfirm() {
-        this.props.resolve({ confirmed: true, value: this.state.inputValue });
-        this.props.close();
+        // this.props.resolve({ confirmed: true, value: this.state.inputValue });
+        // this.props.close();
+        console.log("onConfirm");
+        console.log(this.state.inputValue);
     }
 
     // Cancel input and resolve the promise
     onCancel() {
-        this.props.resolve({ confirmed: false });
-        this.props.close();
+        // this.props.resolve({ confirmed: false });
+        // this.props.close();
+        console.log("onCancel");
     }
 }
 
@@ -31,7 +34,7 @@ export class InputDialog extends Dialog {
 InputDialog.template = xml`
     <Dialog>
         <div t-slot="body">
-            <p><t t-esc="props.body"/></p>
+            
             <input
                 type="text"
                 class="input"
