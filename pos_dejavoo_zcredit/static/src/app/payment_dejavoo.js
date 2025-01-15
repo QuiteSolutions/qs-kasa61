@@ -25,10 +25,10 @@ export class PaymentDejavoo extends PaymentInterface {
 
     async create_refund_intent() {
         const order = this.pos.get_order();
-        const paymentLines = this.pos.get_order().get_paymentlines();
-
-        const paymentLineWithTransaction = paymentLines.find(line => line.transaction_id && line.transaction_id.trim() !== '');
-
+        const paymentLineWithTransaction = this.pos.get_order().payment_ids.find(
+            (line) => line.transaction_id && line.transaction_id.trim() !== ''
+        );;
+        console.log("paymentLineWithTransaction", paymentLineWithTransaction);
         // Build informations for creating a payment intend on Dejavoo.
         const infos = {
             TransactionSum: line.amount * -1,
