@@ -2,14 +2,11 @@
 import { _t } from "@web/core/l10n/translation";
 import { PaymentInterface } from "@point_of_sale/app/payment/payment_interface";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { InputDialog } from "./InputDialog";
 
 export class PaymentDejavoo extends PaymentInterface {
     async create_payment_intent() {
         const order = this.pos.get_order();
-        console.log("order", order.id);
         const line = order.get_selected_paymentline();
-        // Build informations for creating a payment intend on Dejavoo.
         const infos = {
             TransactionSum: line.amount,
             additional_info: {
@@ -17,7 +14,6 @@ export class PaymentDejavoo extends PaymentInterface {
                 print_on_terminal: true,
             },
         };
-        // dj_payment_intent_create will call the Z-Credit api gateway to interact with Dejavoo terminal
         return await this.env.services.orm.silent.call(
             "pos.payment.method",
             "dj_payment_intent_create",
@@ -25,36 +21,23 @@ export class PaymentDejavoo extends PaymentInterface {
         );
     }
 
-    async create_refund_intent() {
+    async create_refund_intent(transactionId) {
         const order = this.pos.get_order();
-    
-        // Prompt user for the transaction ID
-        // const result = await this._showMsgWithInput(
-        //     "Please enter the Transaction ID for the refund:",
-        //     "Enter Transaction ID"
-        // );
-    
-        let foo = prompt('Type here');
-        let bar = confirm('Confirm or deny');   
-    
     
         const line = order.get_selected_paymentline();
         if (!line) {
             throw new Error("No payment line is selected.");
         }
-
     
-        // Build refund intent
         const infos = {
             TransactionSum: line.amount * -1,
-            TransactionIdToCancelOrRefund: foo,
+            TransactionIdToCancelOrRefund: transactionId,
             additional_info: {
                 external_reference: `${this.pos.config.current_session_id.id}_${line.payment_method_id.id}_${order.uuid}`,
                 print_on_terminal: true,
             },
         };
     
-        // Call the refund API
         return await this.env.services.orm.silent.call(
             "pos.payment.method",
             "dj_payment_refund_create",
@@ -77,7 +60,17 @@ export class PaymentDejavoo extends PaymentInterface {
             try{
                 line.set_payment_status("waitingCapture");
 
-                const data = await this.create_refund_intent();
+                
+                let transaction_id = prompt('הכנס מספר עסקה');
+                let bar = confirm(`מספר עסקה : ${transaction_id} \n סכום לזיכוי: ${line.amount} \n האם אתה בטוח שברצונך לבצע את הזיכוי?`);
+
+                if (!bar) {
+                    this._showMsg(_t("Payment has been canceled by the user"), "info");
+                    line.set_payment_status("rejected");
+                    return false;
+                }
+
+                const data = await this.create_refund_intent(transaction_id);
                 if (data.HasError) {
                     this._showMsg(data.ReturnMessage, "error");
                     line.set_payment_status("rejected");
@@ -106,16 +99,15 @@ export class PaymentDejavoo extends PaymentInterface {
 
 
         
-            // Extract all <w> tags which contain <l> and <r>
             const regex = /<l>(.*?)<\/l><r>(.*?)<\/r>/g;
             let match;
             let formattedString = '';
             
-            formattedString += `${"TransactionID"}: ${data?.ReferenceNumber}\n`;
+            formattedString += `${"מספר עסקה"}: ${data?.ReferenceNumber}\n`;
             while ((match = regex.exec(data?.ClientRecieptPP)) !== null) {
-                const key = match[1]; // Extracted key
-                const value = match[2]; // Extracted value
-                formattedString += `${key}: ${value}\n`; // Format key-value pair
+                const key = match[1]; 
+                const value = match[2]; 
+                formattedString += `${key}: ${value}\n`; 
             }
             
             this.payment_intent = data;
@@ -159,14 +151,5 @@ export class PaymentDejavoo extends PaymentInterface {
         });
     }
 
-    _showMsgWithInput(msg, title) {
-        // return new Promise((resolve) => {
-            this.env.services.dialog.add(InputDialog, {
-                title: "Z-Credit v1 " + title,
-                body: msg,
-                 // Pass the resolve function to the dialog
-            });
-        // });
-    }
 }
 
