@@ -36,13 +36,7 @@ export class PaymentDejavoo extends PaymentInterface {
     
         let foo = prompt('Type here');
         let bar = confirm('Confirm or deny');   
-        if (!result || !result.confirmed) {
-            console.warn("Transaction ID input was canceled.");
-            return false;
-        }
     
-        const transactionId = result.value;
-        console.log("User entered Transaction ID:", transactionId);
     
         const line = order.get_selected_paymentline();
         if (!line) {
