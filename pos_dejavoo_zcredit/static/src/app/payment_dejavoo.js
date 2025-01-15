@@ -2,6 +2,8 @@
 import { _t } from "@web/core/l10n/translation";
 import { PaymentInterface } from "@point_of_sale/app/payment/payment_interface";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+const { Dialog } = require("@web/core/dialog/dialog");
+const { useState } = owl;
 
 export class PaymentDejavoo extends PaymentInterface {
     async create_payment_intent() {
@@ -26,11 +28,28 @@ export class PaymentDejavoo extends PaymentInterface {
 
     async create_refund_intent() {
         const order = this.pos.get_order();
-        console.log("order", order.id);
-        const paymentLineWithTransaction = this.pos.get_order().payment_ids.find(
-            (line) => line.transaction_id && line.transaction_id.trim() !== ''
-        );;
-        console.log("paymentLineWithTransaction", paymentLineWithTransaction);
+
+    // Create a dialog for manual input
+    const result = await this.showPopup("ManualInputPopup", {
+        title: "Enter Transaction ID",
+        body: "Please enter the Transaction ID for the refund:",
+        confirmText: "Confirm",
+        cancelText: "Cancel",
+    });
+
+    if (!result) {
+        console.warn("User canceled the manual input for Transaction ID.");
+        return false;
+    }
+
+    const transactionId = result.value;
+    console.log("User Input Transaction ID:", transactionId);
+
+    const line = order.get_selected_paymentline();
+    if (!line) {
+        throw new Error("No payment line is selected.");
+    }
+
         // Build informations for creating a payment intend on Dejavoo.
         const infos = {
             TransactionSum: line.amount * -1,
@@ -97,7 +116,8 @@ export class PaymentDejavoo extends PaymentInterface {
             const regex = /<l>(.*?)<\/l><r>(.*?)<\/r>/g;
             let match;
             let formattedString = '';
-
+            
+            formattedString += `${"TransactionID"}: ${data?.ReferenceNumber}\n`;
             while ((match = regex.exec(data?.ClientRecieptPP)) !== null) {
                 const key = match[1]; // Extracted key
                 const value = match[2]; // Extracted value
