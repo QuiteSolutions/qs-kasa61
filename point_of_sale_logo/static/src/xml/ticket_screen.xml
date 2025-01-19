@@ -5,10 +5,10 @@
             <div class="col wide p-2">הוראות</div>
         </xpath>
 
-         <xpath expr="///div[hasclass('order-row')]" position="inside">
-            <div class="col wide p-2">
-                <div><t t-esc="order.general_note" />abcd</div>
-            </div>
+        <xpath expr="//div[contains(@class, 'order-row')]" position="inside">
+          <div class="col wide p-2">
+              <div><t t-esc="order.general_note" />AAA</div>
+          </div>
         </xpath>
     </t>
 </templates>
