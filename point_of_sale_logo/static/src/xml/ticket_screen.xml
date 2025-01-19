@@ -1,8 +1,8 @@
 <templates id="point_of_sale.template" xml:space="preserve">
     <t t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension"
        owl="1">
-         <xpath expr="//div[hasclass('header-row d-flex text-bg-700 fw-bolder')]" position="inside">
-          <div class="col wide p-2">Dadda</div>
+         <xpath expr="//div[hasclass('header-row d-flex text-bg-700 fw-bolder')]" position="replace">
+            <div class="col wide p-2">Dadda</div>
             <div class="col wide p-2">Receipt Number</div>
             <div class="col wide p-2">Order Number</div>
             <div class="col p-2">cacaca</div>
@@ -12,7 +12,5 @@
             <div class="col narrow p-2">Status</div>
             <div class="col very-narrow p-2" name="delete"></div>
         </xpath>
-
-        
     </t>
 </templates>
