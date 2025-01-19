@@ -10,7 +10,10 @@
             <div class="col p-2">Cashier</div>
             <div class="col end p-2">Total</div>
             <div class="col narrow p-2">Status</div>
-            <div class="col very-narrow p-2" name="delete"></div>
+            <div class="col very-narrow p-2" name="delete"></div> 
+        </xpath>
+        <xpath expr="//div[hasclass('header-row')]//div[8]" position="after">
+                <div class="col wide p-2" name="Delivery Partner">Delivery Partner</div>
         </xpath>
     </t>
 </templates>
