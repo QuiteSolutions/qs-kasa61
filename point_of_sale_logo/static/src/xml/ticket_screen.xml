@@ -1,19 +1,13 @@
 <templates id="point_of_sale.template" xml:space="preserve">
-    <t t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension"
-       owl="1">
-         <xpath expr="//div[hasclass('header-row d-flex text-bg-700 fw-bolder')]" position="replace">
+    <t t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension" owl="1">  
+        <!-- Replace the header-row, using contains() for class matching -->
+        <xpath expr="//div[contains(@class, 'header-row') and contains(@class, 'd-flex') and contains(@class, 'text-bg-700') and contains(@class, 'fw-bolder')]" position="replace">
             <div class="col wide p-2">תאריך ההזמנה</div>
             <div class="col wide p-2">מספר ההזמנה</div>
             <div class="col wide p-2" t-if="showCardholderName()">שם בעל הכרטיס</div>
             <div class="col end p-2">סה״כ לתשלום</div>
             <div class="col narrow p-2">סטאטוס</div>
             <div class="col very-narrow p-2" name="delete"></div>
-        </xpath>
-
-        <xpath expr="//div[contains(@class, 'order-row')]" position="inside">
-          <div class="col wide p-2">
-              <div><t t-esc="order.general_note" />AAA</div>
-          </div>
-        </xpath>
+        </xpath>  
     </t>
 </templates>
