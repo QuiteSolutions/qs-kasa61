@@ -2,7 +2,15 @@
     <t t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension"
        owl="1">
          <xpath expr="//div[hasclass('header-row d-flex text-bg-700 fw-bolder')]" position="inside">
-            <div class="col wide p-2">New Column</div>
+            <div class="col wide p-2">הוראות</div>
+        </xpath>
+
+         <xpath expr="//t[t-if='_filteredOrderList.length !== 0']/div[@class='order-row']" position="inside">
+            <t t-foreach="_filteredOrderList" t-as="order" t-key="order.uuid">
+                <div class="col wide p-2">
+                    <div><t t-esc="order.general_note" /></div>
+                </div>
+            </t>
         </xpath>
     </t>
 </templates>
