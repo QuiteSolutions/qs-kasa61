@@ -36,7 +36,9 @@
     'assets': {
         'point_of_sale._assets_pos': [
             'point_of_sale_logo/static/src/xml/navbar_logo.xml',
-            'point_of_sale_logo/static/src/xml/receipt_logo.xml'
+            'point_of_sale_logo/static/src/xml/receipt_logo.xml',
+            'point_of_sale_logo/static/src/xml/ticket_screen.xml',
+            'point_of_sale_logo/static/src/js/ticket_screen.js',
         ],
     },
     'images': ['static/description/banner.jpg'],
