@@ -1,0 +1,8 @@
+<templates id="point_of_sale.template" xml:space="preserve">
+    <t t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension"
+       owl="1">
+         <xpath expr="//div[hasclass('header-row d-flex text-bg-700 fw-bolder')]" position="inside">
+            <div class="col wide p-2">New Column</div>
+        </xpath>
+    </t>
+</templates>
