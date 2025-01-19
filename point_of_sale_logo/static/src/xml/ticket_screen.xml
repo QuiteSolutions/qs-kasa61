@@ -1,13 +1,18 @@
 <templates id="point_of_sale.template" xml:space="preserve">
-    <t t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension" owl="1">  
-        <!-- Replace the header-row, using contains() for class matching -->
-        <xpath expr="//div[contains(@class, 'header-row') and contains(@class, 'd-flex') and contains(@class, 'text-bg-700') and contains(@class, 'fw-bolder')]" position="replace">
-            <div class="col wide p-2">תאריך ההזמנה</div>
-            <div class="col wide p-2">מספר ההזמנה</div>
-            <div class="col wide p-2" t-if="showCardholderName()">שם בעל הכרטיס</div>
-            <div class="col end p-2">סה״כ לתשלום</div>
-            <div class="col narrow p-2">סטאטוס</div>
+    <t t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension"
+       owl="1">
+         <xpath expr="//div[hasclass('header-row d-flex text-bg-700 fw-bolder')]" position="inside">
+          <div class="col wide p-2">Dadda</div>
+            <div class="col wide p-2">Receipt Number</div>
+            <div class="col wide p-2">Order Number</div>
+            <div class="col p-2">cacaca</div>
+            <div class="col wide p-2" t-if="showCardholderName()">Cardholder Name</div>
+            <div class="col p-2">Cashier</div>
+            <div class="col end p-2">Total</div>
+            <div class="col narrow p-2">Status</div>
             <div class="col very-narrow p-2" name="delete"></div>
-        </xpath>  
+        </xpath>
+
+        
     </t>
 </templates>
